@@ -1,0 +1,71 @@
+%%
+%% Author: adriankunz
+%% 2018-12-28
+%%
+
+% =============== Preamble ===============
+
+% --------------- Definitions ---------------
+\newcommand{\paperTitle}[0]{Valhalla}
+\newcommand{\paperSubtitle}[0]{Seminar Java Features von Morgen, Sommersemester 2020}
+\newcommand{\paperDate}[0]{\today}
+\newcommand{\paperKeywords}[0]{Valhalla, Seminar, OpenJDK, Java}
+\newcommand{\paperAuthor}[0]{Adrian Kunz}
+
+% --------------- Document Setup ---------------
+\documentclass[a4paper]{article}
+\usepackage[left=2.5cm,right=2.5cm,top=2.5cm,bottom=2cm]{geometry}
+
+\title{\paperTitle}
+\author{\paperAuthor}
+\date{\paperDate}
+
+% --------------- Packages ---------------
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+
+% Minted
+\usepackage{minted}
+\usemintedstyle{vs}
+\setminted{frame=single,tabsize=2,linenos}
+
+\newmintinline[code]{java}{}
+\newmintinline[plain]{text}{breaklines}
+
+\newcommand{\codelisting}[3]{%
+\begin{listing}[htp]
+    \inputminted{#1}{#1/#2}
+    \vspace{-3ex}
+    \caption{#3}
+    \label{lst:#2}
+\end{listing}
+}
+
+% Hyperref
+\usepackage{hyperref}
+\hypersetup{
+pdftitle={\paperTitle{}},
+pdfauthor={\paperAuthor{}},
+pdfsubject={\paperTitle{}},
+pdfkeywords={\paperKeywords},
+bookmarksnumbered=true,
+bookmarksopen=true,
+hidelinks,
+}
+\usepackage{hypcap}
+
+% =============== Document ===============
+
+\begin{document}
+
+    \maketitle
+
+    \bibliographystyle{ieeetr}
+    \begingroup
+    \linespread{0}\selectfont % condense the bibliography entries
+    \bibliography{main}
+    \endgroup
+
+\end{document}
