@@ -1,0 +1,15 @@
+/.idea/
+/out/
+/auxil/
+
+_minted-main/
+
+*.aux
+*.bbl
+*.blg
+*.docx
+*.log
+*.out
+*.pdf
+*.synctex.gz
+*.toc
