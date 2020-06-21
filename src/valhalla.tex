@@ -1,1 +1,25 @@
 \section{Projekt Valhalla}\label{sec:valhalla}
+
+Das OpenJDK-Projekt \emph{Valhalla}~\cite{openjdk-valhalla} besteht aus drei wesentlichen Neuerungen, die in folgenden \acp{jep} definiert sind:
+
+\begin{itemize}
+    \item \ac{jep} 169: Value Objects~\cite{jep-169}
+    \item \ac{jep} 193: Variable Handles~\cite{jep-193}
+    \item \ac{jep} 218: Generics over Primitive Types~\cite{jep-218}
+\end{itemize}
+
+Grundlage für die Änderungen des Projekts stellen die \emph{Value Objects} dar.
+Deren Ziel ist es, die \ac{jvm} mit Unterstützung für neue benutzerdefinierbare Typen zu erweitern, die im Vergleich zu bestehenden Klassen keine Referenzsemantik haben, sondern sich wie primitive Datentypen verhalten.
+Unterabschnitt~\ref{subsec:value-types} erläutert diese näher.
+
+Die \emph{Variable Handles} bezeichnen einen Teil der Java Standard-Bibliothek, die präziseren Zugriff auf Felder von Objekten und Array-Elementen ermöglichen.
+Sie erlaubt unter Anderem die Kontrolle der Zugriffsreihenfolge durch mehrere Threads. % TODO can be removed
+Die Implementierung der API erfolgte bereits in Java 9 und wird daher nicht näher in dieser Arbeit betrachtet.
+
+Die Erweiterung von generischen Typen mit Unterstützung für primitive Typen ist der größte Teil des Projekts.
+Sie verlangt weitreichende Änderungen, die sowohl die Sprache als auch die \ac{jvm} betreffen.
+In Unterabschnitt~\ref{subsec:primitive-generics} erfolgt eine Vertiefung in dieses Thema.
+
+\subsection{Value Types}\label{subsec:value-types}
+
+\subsection{Primitive und generische Typen}\label{subsec:primitive-generics}
