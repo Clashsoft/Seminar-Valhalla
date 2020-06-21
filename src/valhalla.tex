@@ -22,4 +22,19 @@ In Unterabschnitt~\ref{subsec:primitive-generics} erfolgt eine Vertiefung in die
 
 \subsection{Value Types}\label{subsec:value-types}
 
+Seit der ersten Version von Java im Jahr 1995 verfolgt die Programmiersprache den Ansatz, dass alles außer primitive Werte ein Objekt ist.
+Das unterscheided Java von Programmiersprachen wie C oder C++, wo primitive Werte sowie durch Klassen und Structs definierte Aggregate davon zunächst nur einfache Werte sind und erst durch Pointer eine Referenzsemantik erhalten.
+
+In Java sind hingegen alle Variablen und Parameter vom Typ einer Klasse implizit Pointer.
+Dies vereinfacht das Programmiermodell und ist weniger fehleranfällig, besonders durch die Präsenz des Garbage Collectors.
+Es führt jedoch auch dazu, dass alle Zugriffe auf Daten in diesen Objekten über Indirektion erfolgen.
+Dies verringert die Lokalität der Daten und führt auf heutiger Hardware, auf der Zugriffe auf den Hauptspeicher wesentlich länger dauern als auf den CPU-Cache-Speicher, zu deutlich langsamerer Performance. % TODO ww führt
+Weiterhin erzeugen Referenzen einen deutlichen höheren Speicherverbrauch:
+Ein Objekt, das zwei \code{int}-Werte beeinhaltet, benötigt auf einer 64-bit \ac{jvm} 8 Byte für die Referenz selber, 16 Byte für den Objekt-Header, und je 4 Byte für die beiden \code{int}-Werte.
+Somit gibt es einen Overhead von 24 Byte, der beim reinen Speichern der Werte entfallen würde.
+Zuletzt sorgt die Allokation und Freigabe des Speichers, besonders bei einer Vielzahl kleiner Objekte, für einen Verwaltungsaufwand seitens des Allocators und Garbage Collectors.
+
+Aufgrund dieser Performance-\ und Speicherbedenken suchen viele Java-Entwickler nach Möglichkeiten, Klassen und Objekte zu umgehen.
+Meist entsteht dabei Code, der händische Optimierungen auf Kosten von Lesbarkeit, Abstraktion und Fehlersicherheit enthält.
+
 \subsection{Primitive und generische Typen}\label{subsec:primitive-generics}
