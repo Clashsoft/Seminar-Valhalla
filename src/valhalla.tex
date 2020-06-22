@@ -34,6 +34,19 @@ Zuletzt sorgt die Allokation und Freigabe des Speichers, besonders bei einer Vie
 
 Aufgrund dieser Performance-\ und Speicherbedenken suchen viele Java-Entwickler nach Möglichkeiten, Klassen und Objekte zu umgehen.
 Meist entsteht dabei Code, der händische Optimierungen auf Kosten von Lesbarkeit, Abstraktion und Fehlersicherheit enthält.
+Value Types sollen dies vermeiden.
+
+% Unterschiede zu Referenzen, Pointerfreiheit
+Es soll nun betrachtet werden, was Value Types von regulären Referenztypen unterscheided.
+Größter Unterschied ist die \emph{Pointerfreiheit}.
+Ohne Pointer funktionieren einige Konzepte nicht mehr, die bisher alltäglich waren.
+So besitzen Werte keine Identität mehr, die verglichen werden könnte, und damit auch keinen Identitäts-Hashcode.
+Weiterhin können sie nicht mehr als Monitor dienen, da ohnehin nicht von zwei Threads darauf zugegriffen werden kann.
+Die \code{clone}-Operation ist nicht mehr sinnvoll, ebenso der Finalizer, da die Werte nicht mehr vom Garbage Collector verarbeitet werden.
+Auch \code{null} ist kein gültiger Wert mehr, allerdings wäre eine Alternative möglich, die den Speicher für den Wert auf null setzt.
+Zuletzt kann nicht von Value Types geerbt werden, da im Voraus bekannt sein muss, wie viel Speicherplatz reserviert werden muss, was mit Vererbung nicht statisch entschieden werden könnte.
+Veränderungen der Felder von Werten würde sich nur auf die lokale Kopie auswirken, wie es bereits von primitiven Typen bekannt ist.
+Die Veränderung von \code{this} in Methoden eines Value Types ist folglich nicht mehr sinnvoll, wodurch Seiteneffekte vermieden werden und nachvollziehbarer Code entsteht.
 
 % TODO Ziel von Value Types
 
