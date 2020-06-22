@@ -11,5 +11,6 @@ _minted-main/
 *.log
 *.out
 *.pdf
+!**/img/*.pdf
 *.synctex.gz
 *.toc
