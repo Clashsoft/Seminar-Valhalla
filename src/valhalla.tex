@@ -29,12 +29,45 @@ In Java sind hingegen alle Variablen und Parameter vom Typ einer Klasse implizit
 Dies vereinfacht das Programmiermodell und ist weniger fehleranfällig, besonders durch die Präsenz des Garbage Collectors.
 Es führt jedoch auch dazu, dass alle Zugriffe auf Daten in diesen Objekten über Indirektion erfolgen.
 Dies verringert die Lokalität der Daten und führt auf heutiger Hardware, auf der Zugriffe auf den Hauptspeicher wesentlich länger dauern als auf den CPU-Cache-Speicher, zu deutlich langsamerer Performance. % TODO ww führt
-Weiterhin erzeugen Referenzen einen deutlichen höheren Speicherverbrauch:
-Ein Objekt, das zwei \code{int}-Werte beeinhaltet, benötigt auf einer 64-bit \ac{jvm} 8 Byte für die Referenz selber, 16 Byte für den Objekt-Header, und je 4 Byte für die beiden \code{int}-Werte.
-Somit gibt es einen Overhead von 24 Byte, der beim reinen Speichern der Werte entfallen würde.
+Weiterhin erzeugen Referenzen einen deutlichen höheren Speicherverbrauch, wie ein Beispiel zeigen wird. % TODO wo?
 Zuletzt sorgt die Allokation und Freigabe des Speichers, besonders bei einer Vielzahl kleiner Objekte, für einen Verwaltungsaufwand seitens des Allocators und Garbage Collectors.
 
 Aufgrund dieser Performance-\ und Speicherbedenken suchen viele Java-Entwickler nach Möglichkeiten, Klassen und Objekte zu umgehen.
 Meist entsteht dabei Code, der händische Optimierungen auf Kosten von Lesbarkeit, Abstraktion und Fehlersicherheit enthält.
+
+% TODO Ziel von Value Types
+
+% Memory example
+Um das Speicherproblem näher zu erläutern, soll nun ein Beispiel betrachtet werden.
+Es sollen einige ganzzahlige Punkte im zweidimensionalen Raum gespeichert die einen Pfad bilden.
+Die Punkte sind als Objekte mit zwei \code{int}-Feldern modelliert, der Pfad als Array von Punkten.
+Bei einer Pfadlänge von drei berechnet sich der Speicherverbrauch wie folgt:
+
+\[ \SI{24}{\byte} \text{(Array-Header)} + 3 \cdot \SI{8}{\byte} \text{(Referenzen im Array)} + 3 \cdot (\SI{16}{\byte} \text{(Objekt-Header)} + 2 \cdot \SI{4}{\byte} \text{(int-Werte)}) = \SI{120}{\byte} \]
+
+Ein Objekt, das zwei \code{int}-Werte beeinhaltet, benötigt auf einer 64-bit \ac{jvm} 8 Byte für die Referenz selber, 16 Byte\footnote{Mit \code{-XX:+UseCompressedOops} könnte dies auf 12 Byte reduziert werden, allerdings kommen dann 4 Byte Padding hinzu, da die Größere von Objekten im Heap ein Vielfaches von 8 Byte sein muss.} für den Objekt-Header und je 4 Byte für die beiden \code{int}-Werte.
+Die Größe eines Array-Headers beträgt 24 Byte.
+Mit drei Objekten ergibt sich also insgesamt ein Speicherverbrauch von 120 Byte.
+
+Das gleiche Beispiel soll nun mit Value-Typen realisiert werden.
+Dabei entfallen die Objekt-Header und Referenzen vollständig.
+Der neue Speicherverbrauch berechnet sich also wie folgt:
+
+\[ \SI{24}{\byte} \text{(Array-Header)} + 3 \cdot 2 \cdot \SI{4}{\byte} \text{(int-Werte)} = \SI{48}{\byte} \]
+
+Folglich konnten 72 Byte eingespart werden.
+Zu beachten ist auch, dass die gesamten Daten des Arrays mit einer Größe von 48 Byte in eine Cache-Zeile passen, wenn bei deren Größe von 64 Byte ausgangen wird.
+Der Effekt wird verstärkt, wenn das Array mehr Elemente enthält.
+
+In Abbildung~\ref{fig:memory-usage} erfolgt eine grafische Darstellung des verringerten Speicherverbrauchs.
+Sie zeigt links das Speicherlayout in heutigen \acp{jvm} und rechts das Speicherlayout, wenn Value Types für die Punkte verwendet werden.
+Die Höhe der Rechecke mit Zahlen entspricht hier 4 Byte.
+
+\begin{figure}
+    \centering
+    \includegraphics{img/memory-usage.pdf}
+    \caption{Vergleich des Speicherlayouts eines Arrays von Punkten heute und mit Value Types}
+    \label{fig:memory-usage}
+\end{figure}
 
 \subsection{Primitive und generische Typen}\label{subsec:primitive-generics}
