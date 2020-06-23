@@ -62,6 +62,32 @@ Somit erfüllen Value-basierte Klassen fast alle zuvor genannten Punkte zur Poin
 Ausnahme ist die Verwendung von \code{null} als erlaubter Wert sowie die Möglichkeit zur Vererbung.
 Dies ist jedoch bei derzeitigen Beispielen für Value-basierte Klassen wie \code{java.lang.Integer} und \code{java.util.Optional} ohnehin nicht üblich.
 
+% Inline Classes
+Mit Projekt Valhalla soll die Konvention der Value-basierten Klassen nun Sprach- und \ac{jvm}-Unterstützung erhalten.
+Diese trägt die Bezeichnung \emph{Inline-Klassen}~\cite{object-model}, die sich aus dem Schlüsselwort \code{inline} ableitet, das für die Deklaration von Value Types eingesetzt wird.
+Listing~\ref{inline-class-example} zeigt, wie eine Inline-Klasse aussehen kann.
+Dabei ist zu beachten, dass sich der Code nur durch das Schlüsselwort \code{inline} von einer regulären Klasse unterscheidet.
+Nach dem Motto ``Codes like a class, works like an int'' sollen die syntaktischen Änderungen bewusst klein sein.
+
+\begin{listing}
+    \begin{minted}{java}
+        inline class Point {
+            private int x;
+            private int y;
+
+            public Point(int x, int y) {
+                this.x = x;
+                this.y = y;
+            }
+
+            public int x() { return x; }
+            public int y() { return y; }
+        }
+    \end{minted}
+    \caption{Beispiel für eine Inline-Klasse (aus~\cite{object-model})}
+    \label{inline-class-example}
+\end{listing}
+
 % TODO Ziel von Value Types
 
 % Memory example
