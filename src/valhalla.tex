@@ -58,9 +58,9 @@ Bei einer Pfadlänge von drei berechnet sich der Speicherverbrauch wie folgt:
 
 \[ \SI{24}{\byte} \text{(Array-Header)} + 3 \cdot \SI{8}{\byte} \text{(Referenzen im Array)} + 3 \cdot (\SI{16}{\byte} \text{(Objekt-Header)} + 2 \cdot \SI{4}{\byte} \text{(int-Werte)}) = \SI{120}{\byte} \]
 
-Ein Objekt, das zwei \code{int}-Werte beeinhaltet, benötigt auf einer 64-bit \ac{jvm} 8 Byte für die Referenz selber, 16 Byte\footnote{Mit \code{-XX:+UseCompressedOops} könnte dies auf 12 Byte reduziert werden, allerdings kommen dann 4 Byte Padding hinzu, da die Größere von Objekten im Heap ein Vielfaches von 8 Byte sein muss.} für den Objekt-Header und je 4 Byte für die beiden \code{int}-Werte.
-Die Größe eines Array-Headers beträgt 24 Byte.
-Mit drei Objekten ergibt sich also insgesamt ein Speicherverbrauch von 120 Byte.
+Ein Objekt, das zwei \code{int}-Werte beeinhaltet, benötigt auf einer 64-bit \ac{jvm} $\SI{8}{\byte}$ für die Referenz selber, $\SI{16}{\byte}$\footnote{Mit \code{-XX:+UseCompressedOops} könnte dies auf $\SI{12}{\byte}$ reduziert werden, allerdings kommen dann $\SI{4}{\byte}$ Padding hinzu, da die Größere von Objekten im Heap ein Vielfaches von $\SI{8}{\byte}$ sein muss.} für den Objekt-Header und je $\SI{4}{\byte}$ für die beiden \code{int}-Werte.
+Die Größe eines Array-Headers beträgt $\SI{24}{\byte}$.
+Mit drei Objekten ergibt sich also insgesamt ein Speicherverbrauch von $\SI{120}{\byte}$.
 
 Das gleiche Beispiel soll nun mit Value-Typen realisiert werden.
 Dabei entfallen die Objekt-Header und Referenzen vollständig.
@@ -68,13 +68,13 @@ Der neue Speicherverbrauch berechnet sich also wie folgt:
 
 \[ \SI{24}{\byte} \text{(Array-Header)} + 3 \cdot 2 \cdot \SI{4}{\byte} \text{(int-Werte)} = \SI{48}{\byte} \]
 
-Folglich konnten 72 Byte eingespart werden.
-Zu beachten ist auch, dass die gesamten Daten des Arrays mit einer Größe von 48 Byte in eine Cache-Zeile passen, wenn bei deren Größe von 64 Byte ausgangen wird.
+Folglich konnten $\SI{72}{\byte}$ eingespart werden.
+Zu beachten ist auch, dass die gesamten Daten des Arrays mit einer Größe von $\SI{48}{\byte}$ in eine Cache-Zeile passen, wenn bei deren Größe von $\SI{64}{\byte}$ ausgangen wird.
 Der Effekt wird verstärkt, wenn das Array mehr Elemente enthält.
 
 In Abbildung~\ref{fig:memory-usage} erfolgt eine grafische Darstellung des verringerten Speicherverbrauchs.
 Sie zeigt links das Speicherlayout in heutigen \acp{jvm} und rechts das Speicherlayout, wenn Value Types für die Punkte verwendet werden.
-Die Höhe der Rechecke mit Zahlen entspricht hier 4 Byte.
+Die Höhe der Rechecke mit Zahlen entspricht hier $\SI{4}{\byte}$.
 
 \begin{figure}
     \centering
