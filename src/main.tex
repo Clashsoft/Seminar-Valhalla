@@ -34,14 +34,7 @@
 \newmintinline[code]{java}{}
 \newmintinline[plain]{text}{breaklines}
 
-\newcommand{\codelisting}[3]{%
-\begin{listing}[htp]
-    \inputminted{#1}{#1/#2}
-    \vspace{-3ex}
-    \caption{#3}
-    \label{lst:#2}
-\end{listing}
-}
+\setminted[java]{autogobble}
 
 % Hyperref
 \usepackage{hyperref}
