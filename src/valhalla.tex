@@ -88,7 +88,38 @@ Nach dem Motto ``Codes like a class, works like an int''~\cite{object-model} sol
     \label{inline-class-example}
 \end{listing}
 
-% TODO Ziel von Value Types
+% Primitive untergeordnet
+Mit der Einführung von Inline-Klassen wird die Unterscheidung zwischen primitiven und Referenz-Typen abgeschafft.
+Nun wird zwischen Inline- und Referenz-Typen unterschieden;
+die primitiven Typen werden den Inline-Typen untergeordnet.
+% T.default
+Weiterhin kann nun für alle Typen ein Default-Wert definiert werden, der mit \code{T.default} bezeichnet wird.
+Für primitive Typen bleibt dieser \code{0} oder \code{false}, während Referenztypen \code{null} erlauben.
+Inline-Typen definieren ihren Default-Wert als eine Instanz, bei der alle Felder mit dem jeweiligen Default-Wert belegt sind.
+
+% Marker interfaces
+Unter Umständen kann es nützlich sein, zur Laufzeit zu ermitteln, ob es sich bei einem Wert um eine Referenz oder einen Inline-Wert handelt.
+Dafür werden neue Interfaces eingeführt, von denen automatisch und implizit alle Klassen erben:
+\code{IdentityObject} für Referenzen und \code{InlineObject} für Inline-Klassen.
+So kann entschieden werden, ob Identitätsoperationen wie \code{==} oder Synchronisierung sinnvoll sind.
+% Interfaces + Klassenvererbung
+Inline-Klassen dürfen auch von regulären Interfaces erben.
+Ebenfalls soll es möglich sein, sie von Klassen erben zu lassen, solange diese nicht den Anforderungen an Inline-Klassen widersprechen.
+Nicht erlaubt wären beispielsweise Superklassen mit nicht-finalen Feldern oder Methoden, die \code{synchronized} sind.
+Ein Beispiel für eine solche Klasse ist \code{Object}, von dem weiterhin alle Klassen erben.
+
+% Boxing
+Mit der Unterordnung von primitiven Typen werden auch diese ohne Boxing von \code{Object} erben.
+Boxing wird dann zu einer Operation, die von der JVM intern durchgeführt wird und nicht mehr nur durch den Compiler implementierter syntaktischer Zucker ist.
+% Arrays
+Das hat zur Folge, dass Array-Typen anders voneinander erben.
+Insbesondere kann nun ein \code{int[]} direkt in ein \code{Integer[]} oder ein \code{Object[]} umgewandelt werden.
+Ein ähnliches Verhalten zeigen die benutzerdefinierten Inline-Klassen.
+% Referenz-Wrapper T.ref
+Anders als bei primitiven Typen gibt es jedoch dabei keine explizit definierten Referenz-Wrapper.
+Stattdessen soll neue Syntax hinzugefügt werden, mit der Referenz-Wrapper für Inline-Klassen benannt werden können.
+Diese nimmt die Form \code{T.ref} an, wobei \code{T} eine Inline-Klasse bezeichnet.
+Im Gegensatz dazu steht die Form \code{T.val}, die explizit den Inline-Typ benennt.
 
 % Memory example
 Um das Speicherproblem näher zu erläutern, soll nun ein Beispiel betrachtet werden.
