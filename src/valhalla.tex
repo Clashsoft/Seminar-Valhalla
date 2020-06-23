@@ -48,6 +48,20 @@ Zuletzt kann nicht von Value Types geerbt werden, da im Voraus bekannt sein muss
 Veränderungen der Felder von Werten würde sich nur auf die lokale Kopie auswirken, wie es bereits von primitiven Typen bekannt ist.
 Die Veränderung von \code{this} in Methoden eines Value Types ist folglich nicht mehr sinnvoll, wodurch Seiteneffekte vermieden werden und nachvollziehbarer Code entsteht.
 
+% Value-basierte Klassen
+Seit Java 8 definiert die Sprache bereits ein Konzept, das den Value Types ähnelt: die Value-basierten Klassen~\cite{value-based-classes}.
+Dabei handelt es sich um eine Konvention, an die von einigen Klassen der Standardbibliothek eingehalten wird und auch für Bibliotheksautoren und andere Endbenutzer der Sprache verfügbar ist.
+Wesentlich bei Value-basierten Klassen ist der Einsatz von Feldern, die \code{final} sind, wodurch Instanzen dieser Klassen unveränderbar werden.
+Weiterhin dürfen diese Klassen keinen öffentlich zugänglichen Konstruktor besitzen, sondern müssen stets über eine Factory-Methode instanziiert werden.
+Dadurch gegen sie keine Garantien über die Identität erstellter Objekte.
+Die Factory-Methode kann beispielsweise ihre Rückgabewerte in einem Cache speichern.
+Aufgrund der fehlenden Identität ist es nicht sinnvoll, Identitätsvergleiche mit \code{==} durchzuführen.
+Folglich müssen stets \code{equals} und \code{hashCode} implementiert werden.
+Die Verwendung von Identitäts-basierten Operationen und Synchronisierung auf Value-basierten Klassen ist zwar derzeit nicht verboten, da es sich um eine Konvention handelt, kann aber zu unerwarteten Ergebnissen führen.
+Somit erfüllen Value-basierte Klassen fast alle zuvor genannten Punkte zur Pointerfreiheit.
+Ausnahme ist die Verwendung von \code{null} als erlaubter Wert sowie die Möglichkeit zur Vererbung.
+Dies ist jedoch bei derzeitigen Beispielen für Value-basierte Klassen wie \code{java.lang.Integer} und \code{java.util.Optional} ohnehin nicht üblich.
+
 % TODO Ziel von Value Types
 
 % Memory example
