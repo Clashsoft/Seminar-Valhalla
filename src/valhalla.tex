@@ -11,7 +11,7 @@ Das OpenJDK-Projekt \emph{Valhalla}~\cite{openjdk-valhalla} besteht aus drei wes
 Grundlage für die Änderungen des Projekts stellen die \emph{Value Objects} dar.
 Deren Ziel ist es, die \ac{jvm} mit Unterstützung für neue benutzerdefinierbare Typen zu erweitern, die im Vergleich zu bestehenden Klassen keine Referenzsemantik haben, sondern sich wie primitive Datentypen verhalten.
 \ac{jep} 169 selber beschäftigt sich nur mit einer kleinen Erweiterung der \ac{jvm} in diese Richtung.
-Unterabschnitt~\ref{subsec:value-types} betrachtet das Ziel der Value Types als Ganzes.
+Unterabschnitt~\ref{subsec:value-types} betrachtet die Value Types als Ganzes.
 
 Die \emph{Variable Handles} bezeichnen einen Teil der Java Standard-Bibliothek, die präziseren Zugriff auf Felder von Objekten und Array-Elementen ermöglichen.
 Die Implementierung der \ac{api} erfolgte bereits in Java 9 und wird daher nicht näher in dieser Arbeit betrachtet.
@@ -52,10 +52,10 @@ Die Veränderung von \code{this} in Methoden eines Value Types ist folglich nich
 \subsubsection{Value-basierte Klassen}
 
 Seit Java 8 definiert die Sprache bereits ein Konzept, das den Value Types ähnelt: die Value-basierten Klassen~\cite{value-based-classes}.
-Dabei handelt es sich um eine Konvention, an die von einigen Klassen der Standardbibliothek eingehalten wird und auch für Bibliotheksautoren und andere Endbenutzer der Sprache verfügbar ist.
+Dabei handelt es sich um eine Konvention, die von einigen Klassen der Standardbibliothek eingehalten wird und auch für Bibliotheksautoren und andere Endbenutzer der Sprache verfügbar ist.
 Wesentlich bei Value-basierten Klassen ist der Einsatz von Feldern, die \code{final} sind, wodurch Instanzen dieser Klassen unveränderbar werden.
 Weiterhin dürfen diese Klassen keinen öffentlich zugänglichen Konstruktor besitzen, sondern müssen stets über eine Factory-Methode instanziiert werden.
-Dadurch gegen sie keine Garantien über die Identität erstellter Objekte.
+Dadurch müssen keine Garantien über die Identität erstellter Objekte gemacht werden.
 Die Factory-Methode kann beispielsweise ihre Rückgabewerte in einem Cache speichern.
 Aufgrund der fehlenden Identität ist es nicht sinnvoll, Identitätsvergleiche mit \code{==} durchzuführen.
 Folglich müssen stets \code{equals} und \code{hashCode} implementiert werden.
@@ -109,7 +109,7 @@ So kann entschieden werden, ob Identitätsoperationen wie \code{==} oder Synchro
 Inline-Klassen dürfen auch von regulären Interfaces erben.
 Ebenfalls soll es möglich sein, sie von Klassen erben zu lassen, solange diese nicht den Anforderungen an Inline-Klassen widersprechen.
 Nicht erlaubt wären beispielsweise Superklassen mit nicht-finalen Feldern oder Methoden, die \code{synchronized} sind.
-Ein Beispiel für eine solche Klasse ist \code{Object}, von dem weiterhin alle Klassen erben.
+Ein Beispiel für eine Klasse, welche die Anforderungen erfüllt, ist \code{Object}, von der weiterhin alle Klassen erben.
 
 % Boxing
 Mit der Unterordnung von primitiven Typen werden auch diese ohne Boxing von \code{Object} erben.
@@ -123,13 +123,14 @@ Anders als bei primitiven Typen gibt es jedoch dabei keine explizit definierten 
 Stattdessen soll neue Syntax hinzugefügt werden, mit der Referenz-Wrapper für Inline-Klassen benannt werden können.
 Diese nimmt die Form \code{T.ref} an, wobei \code{T} eine Inline-Klasse bezeichnet.
 Im Gegensatz dazu steht die Form \code{T.val}, die explizit den Inline-Typ benennt.
+Diese Formen sollen mit den bestehenden Namen für primitive und Wrapper-Typen kompatibel sein -- \code{int.ref} bezeichnet dann den selben Typ wie \code{Integer} und \code{Integer.val} entspricht \code{int}.
 
 \subsubsection{Beispiel zum Speicherverbrauch}
 
 Um das Speicherproblem näher zu erläutern, soll nun ein Beispiel betrachtet werden.
-Es sollen einige ganzzahlige Punkte im zweidimensionalen Raum gespeichert die einen Pfad bilden.
+Es sollen einige ganzzahlige Punkte im zweidimensionalen Raum gespeichert werden, die einen Pfad bilden.
 Die Punkte sind als Objekte mit zwei \code{int}-Feldern modelliert, der Pfad als Array von Punkten.
-Bei einer Pfadlänge von drei berechnet sich der Speicherverbrauch wie folgt:
+Bei einer Pfadlänge von drei berechnet sich der Speicherverbrauch wie folgt: % TODO source
 
 \[ \SI{24}{\byte} \text{(Array-Header)} + 3 \cdot \SI{8}{\byte} \text{(Referenzen im Array)} + 3 \cdot (\SI{16}{\byte} \text{(Objekt-Header)} + 2 \cdot \SI{4}{\byte} \text{(int-Werte)}) = \SI{120}{\byte} \]
 
