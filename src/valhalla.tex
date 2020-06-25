@@ -184,3 +184,13 @@ Die Benutzung von \code{Map} war weiterhin ohne Angabe der Schlüssel- und Wert-
 Die Wahrung der Kompatibilität war ein besonderes Ziel bei der Entwicklung der generischen Typen.
 Es sollte vermieden werden, dass Entwickler sämtlichen Code neu kompilieren müssen.
 Dies wurde durch Erasure ermöglicht.
+
+Eine Limitierung, die durch Erasure entsteht, ist die Unmöglichkeit der Verwendung von primitiven Typen als Typparameter.
+So ist es derzeit ein Error, den Typ \code{List<int>} zu verwenden.
+Das liegt daran, dass der Typ \code{int} selber derzeit nicht kompatibel mit \code{Object} ist.
+Nur durch Boxing kann die Umwandlung \code{int <-> Integer <-> Object} geschehen.
+Dies kann aber in generischen Klassen nicht sichergestellt werden, solange der konkrete Typ nicht bekannt ist.
+Folglich muss statt \code{List<int>} eine \code{List<Integer>} verwendet werden.
+Zur Laufzeit kann dies jedoch aufgrund des Boxings die Performance beeinträchtigen:
+Sowohl das Boxing (Anlegen von \code{Integer}-Objekten) als auch das Unboxing (Extrahieren des \code{int}-Werts) benötigt Zeit, besonders aufgrund des Allokations- und Garbage-Collector-Overheads sowie der zusätzlichen Indirektion.
+Der erhöhte Speicherverbrauch, der bereits im vorherigen Unterabschnitt~\ref{subsec:value-types} gezeigt wurde, ist auch hier in ähnlichem Umfang vorhanden.
