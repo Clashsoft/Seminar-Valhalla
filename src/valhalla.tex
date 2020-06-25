@@ -172,7 +172,14 @@ Dadurch kann die Typsicherheit auch bei Datenstrukturen sichergestellt werden.
 Die Implementierung von generischen Typen erfolgte durch die sogenannte \emph{Erasure}.
 Beim Generieren von Bytecode ersetzt der Java-Compiler sämtliche Vorkommen von generischen Typvariablen durch \code{Object}\footnote{Falls durch die Form \code{<T extends Bound>} ein Bound angegeben wird, steht dieser anstelle von \code{Object}.}.
 Generische Typen konnten so implementiert werden, ohne Änderungen an der \ac{jvm} vornehmen zu müssen.
-Weiterhin konnten Entwickler schrittweise auf generische Typen umsteigen.
+Erasure steht im Kontrast zur Spezialisierung, bei der Typvariablen wie bei einer Vorlage durch die konkreten Typen ersetzt werden, als wären sie direkt in der Klasse oder Methode verwendet worden.
+Dieser Ansatz wird beispielsweise von C++ benutzt.
+Er hat den Vorteil, dass typspezifische Optimierungen durchgeführt werden können und Spezialisierungen eigene Methoden und sonstige Funktionalität bereitstellen können.
+Nachteile ist jedoch die Duplizierung von Code, wodurch Binärdateien größer werden.
+Zudem sind sogenannte \emph{Wildcard-Typen} mit Spezialisierung nicht möglich.
+Ein Wildcard-Typ wie \code{List<?>} bildet in Java einen gemeinsamen Supertyp von \code{List<Integer>} und \code{List<String>}.
+
+Erasure ermöglichte ferner den Entwicklern, schrittweise auf generische Typen umsteigen.
 Die Benutzung von \code{Map} war weiterhin ohne Angabe der Schlüssel- und Wert-Typen erlaubt -- dies wird als Raw Type bezeichnet und verhält sich ähnlich wie \code{Map<Object, Object>}.
 Die Wahrung der Kompatibilität war ein besonderes Ziel bei der Entwicklung der generischen Typen.
 Es sollte vermieden werden, dass Entwickler sämtlichen Code neu kompilieren müssen.
