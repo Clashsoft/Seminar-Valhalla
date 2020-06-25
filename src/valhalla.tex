@@ -161,3 +161,19 @@ Auch algebraische Datentypen wie \code{Optional}, \code{Either}, \code{Unit} und
 Letztere benötigen jedoch besondere Sprachunterstützung, die noch nicht Teil des Projekts ist.
 
 \subsection{Primitive und generische Typen}\label{subsec:primitive-generics}
+
+Generische Typen sind ein Feature, das bereits in Java 5 eingeführt wurde.
+Sie ermöglichen es, Klassen und Methoden zu definieren, die über verwendete Typen abstrahieren.
+Dabei kommen Typvariablen als Platzhalter zum Einsatz.
+So kann beispielsweise eine \code{Map}-Klasse erstelle werden, bei der Schlüssel und Werte beliebig aber fest typisiert sind.
+Bei der Verwendung der Klasse werden die Typen festgelegt: \code{Map<String, Integer>}.
+Dadurch kann die Typsicherheit auch bei Datenstrukturen sichergestellt werden.
+
+Die Implementierung von generischen Typen erfolgte durch die sogenannte \emph{Erasure}.
+Beim Generieren von Bytecode ersetzt der Java-Compiler sämtliche Vorkommen von generischen Typvariablen durch \code{Object}\footnote{Falls durch die Form \code{<T extends Bound>} ein Bound angegeben wird, steht dieser anstelle von \code{Object}.}.
+Generische Typen konnten so implementiert werden, ohne Änderungen an der \ac{jvm} vornehmen zu müssen.
+Weiterhin konnten Entwickler schrittweise auf generische Typen umsteigen.
+Die Benutzung von \code{Map} war weiterhin ohne Angabe der Schlüssel- und Wert-Typen erlaubt -- dies wird als Raw Type bezeichnet und verhält sich ähnlich wie \code{Map<Object, Object>}.
+Die Wahrung der Kompatibilität war ein besonderes Ziel bei der Entwicklung der generischen Typen.
+Es sollte vermieden werden, dass Entwickler sämtlichen Code neu kompilieren müssen.
+Dies wurde durch Erasure ermöglicht.
