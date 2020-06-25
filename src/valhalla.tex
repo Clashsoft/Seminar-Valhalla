@@ -36,7 +36,8 @@ Aufgrund dieser Performance-\ und Speicherbedenken suchen viele Java-Entwickler 
 Meist entsteht dabei Code, der händische Optimierungen auf Kosten von Lesbarkeit, Abstraktion und Fehlersicherheit enthält.
 Value Types sollen dies vermeiden.
 
-% Unterschiede zu Referenzen, Pointerfreiheit
+\subsubsection{Unterschiede zu Referenztypen}
+
 Es soll nun betrachtet werden, was Value Types von regulären Referenztypen unterscheided.
 Größter Unterschied ist die \emph{Pointerfreiheit}.
 Ohne Pointer funktionieren einige Konzepte nicht mehr, die bisher alltäglich waren.
@@ -48,7 +49,8 @@ Zuletzt kann nicht von Value Types geerbt werden, da im Voraus bekannt sein muss
 Veränderungen der Felder von Werten würde sich nur auf die lokale Kopie auswirken, wie es bereits von primitiven Typen bekannt ist.
 Die Veränderung von \code{this} in Methoden eines Value Types ist folglich nicht mehr sinnvoll, wodurch Seiteneffekte vermieden werden und nachvollziehbarer Code entsteht.
 
-% Value-basierte Klassen
+\subsubsection{Value-basierte Klassen}
+
 Seit Java 8 definiert die Sprache bereits ein Konzept, das den Value Types ähnelt: die Value-basierten Klassen~\cite{value-based-classes}.
 Dabei handelt es sich um eine Konvention, an die von einigen Klassen der Standardbibliothek eingehalten wird und auch für Bibliotheksautoren und andere Endbenutzer der Sprache verfügbar ist.
 Wesentlich bei Value-basierten Klassen ist der Einsatz von Feldern, die \code{final} sind, wodurch Instanzen dieser Klassen unveränderbar werden.
@@ -62,7 +64,8 @@ Somit erfüllen Value-basierte Klassen fast alle zuvor genannten Punkte zur Poin
 Ausnahme ist die Verwendung von \code{null} als erlaubter Wert sowie die Möglichkeit zur Vererbung.
 Dies ist jedoch bei derzeitigen Beispielen für Value-basierte Klassen wie \code{java.lang.Integer} und \code{java.util.Optional} ohnehin nicht üblich.
 
-% Inline Classes
+\subsubsection{Inline-Klassen}
+
 Mit Projekt Valhalla soll die Konvention der Value-basierten Klassen nun Sprach- und \ac{jvm}-Unterstützung erhalten.
 Diese trägt die Bezeichnung \emph{Inline-Klassen}~\cite{object-model}, die sich aus dem Schlüsselwort \code{inline} ableitet, das für die Deklaration von Value Types eingesetzt wird.
 Listing~\ref{inline-class-example} zeigt, wie eine Inline-Klasse aussehen kann.
@@ -121,7 +124,8 @@ Stattdessen soll neue Syntax hinzugefügt werden, mit der Referenz-Wrapper für 
 Diese nimmt die Form \code{T.ref} an, wobei \code{T} eine Inline-Klasse bezeichnet.
 Im Gegensatz dazu steht die Form \code{T.val}, die explizit den Inline-Typ benennt.
 
-% Memory example
+\subsubsection{Beispiel zum Speicherverbrauch}
+
 Um das Speicherproblem näher zu erläutern, soll nun ein Beispiel betrachtet werden.
 Es sollen einige ganzzahlige Punkte im zweidimensionalen Raum gespeichert die einen Pfad bilden.
 Die Punkte sind als Objekte mit zwei \code{int}-Feldern modelliert, der Pfad als Array von Punkten.
