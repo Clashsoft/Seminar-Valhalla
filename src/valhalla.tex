@@ -208,3 +208,9 @@ Das Problem wird verstärkt, wenn die zu spezialisierende Klasse mehr als einen 
 Im Package \code{java.util.function} ist eine Reihe von Spezialisierungen für Interfaces vorhanden, die je eine Methode mit null, einem oder zwei Parametern bereitstellen, deren Typen generisch sind.
 Mehrere Klassen varriieren ebenfalls im Rückgabetyp der Methode.
 Händische Spezialisierungen können zwar für verbesserte Performance sorgen, besonders wenn typspezifische Optimierungen vorgenommen werden, erzeugen aber einen erhöhten Wartungsaufwand und sind fehleranfälliger.
+
+In bisherigen Java-Versionen ist das Problem nur auf die acht primitive Typen beschränkt.
+Reduziert man diese acht auf die drei häufigsten -- \code{int}, \code{long} und \code{double} -- kann die Anzahl der händischen Spezialisierungen eingeschränkt werden.
+Dies ist jedoch nicht mehr möglich, wenn mit Value Types eine unendliche Zahl neuer Typen hinzukomment, die sich ähnlich wie die Primitiven verhalten sollen.
+Es wäre nicht sinnvoll, den Speicherverbrauch von Arrays zu verringern, wenn das nicht auch mit Listen möglich ist, da diese in den meisten Fällen die bessere Wahl sind.
+Folglich ist es naheliegend, dass die Änderung von generischen Typen zusammen mit den neuen Value Types eingeführt wird.
