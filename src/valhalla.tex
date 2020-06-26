@@ -199,3 +199,12 @@ Folglich muss statt \code{List<int>} eine \code{List<Integer>} verwendet werden.
 Zur Laufzeit kann dies jedoch aufgrund des Boxings die Performance beeinträchtigen:
 Sowohl das Boxing (Anlegen von \code{Integer}-Objekten) als auch das Unboxing (Extrahieren des \code{int}-Werts) benötigt Zeit, besonders aufgrund des Allokations- und Garbage-Collector-Overheads sowie der zusätzlichen Indirektion.
 Der erhöhte Speicherverbrauch, der bereits im vorherigen Unterabschnitt~\ref{subsec:value-types} gezeigt wurde, ist auch hier in ähnlichem Umfang vorhanden.
+
+% Händische Spezialisierungen in Stdlib
+Aufgrund von Bedenken zu Performance und Speicherverbrauch sind in Java-Bibliotheken häufig händische Spezialisierungen vorhanden.
+Beispiele dafür sind selbst in der Standardbibliothek zu finden.
+So gibt es die Klassen \code{OptionalInt} und \code{IntStream} sowie Äquivalente für \code{long} und \code{double}, die als Ersatz für die in Java 8 eingeführten Klassen \code{Optional} und \code{Stream} dienen und untereinander nicht kompatibel sind~\cite{java-8-docs}.
+Das Problem wird verstärkt, wenn die zu spezialisierende Klasse mehr als einen Typ-Parameter hat.
+Im Package \code{java.util.function} ist eine Reihe von Spezialisierungen für Interfaces vorhanden, die je eine Methode mit null, einem oder zwei Parametern bereitstellen, deren Typen generisch sind.
+Mehrere Klassen varriieren ebenfalls im Rückgabetyp der Methode.
+Händische Spezialisierungen können zwar für verbesserte Performance sorgen, besonders wenn typspezifische Optimierungen vorgenommen werden, erzeugen aber einen erhöhten Wartungsaufwand und sind fehleranfälliger.
