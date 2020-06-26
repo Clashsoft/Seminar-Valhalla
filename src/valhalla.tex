@@ -174,6 +174,7 @@ So kann beispielsweise eine \code{Map}-Klasse erstelle werden, bei der Schlüsse
 Bei der Verwendung der Klasse werden die Typen festgelegt: \code{Map<String, Integer>}.
 Dadurch kann die Typsicherheit auch bei Datenstrukturen sichergestellt werden.
 
+% Erasure
 Die Implementierung von generischen Typen erfolgte durch die sogenannte \emph{Erasure}.
 Beim Generieren von Bytecode ersetzt der Java-Compiler sämtliche Vorkommen von generischen Typvariablen durch \code{Object}\footnote{Falls durch die Form \code{<T extends Bound>} ein Bound angegeben wird, steht dieser anstelle von \code{Object}.}.
 Generische Typen konnten so implementiert werden, ohne Änderungen an der \ac{jvm} vornehmen zu müssen.
@@ -184,12 +185,14 @@ Nachteile ist jedoch die Duplizierung von Code, wodurch Binärdateien größer w
 Zudem sind sogenannte \emph{Wildcard-Typen} mit Spezialisierung nicht möglich.
 Ein Wildcard-Typ wie \code{List<?>} bildet in Java einen gemeinsamen Supertyp von \code{List<Integer>} und \code{List<String>}.
 
+% Migration mit Erasure
 Erasure ermöglichte ferner den Entwicklern, schrittweise auf generische Typen umsteigen.
 Die Benutzung von \code{Map} war weiterhin ohne Angabe der Schlüssel- und Wert-Typen erlaubt -- dies wird als Raw Type bezeichnet und verhält sich ähnlich wie \code{Map<Object, Object>}.
 Die Wahrung der Kompatibilität war ein besonderes Ziel bei der Entwicklung der generischen Typen.
 Es sollte vermieden werden, dass Entwickler sämtlichen Code neu kompilieren müssen.
 Dies wurde durch Erasure ermöglicht.
 
+% Keine generischen Typen mit Primitives
 Eine Limitierung, die durch Erasure entsteht, ist die Unmöglichkeit der Verwendung von primitiven Typen als Typparameter.
 So ist es derzeit ein Error, den Typ \code{List<int>} zu verwenden.
 Das liegt daran, dass der Typ \code{int} selber derzeit nicht kompatibel mit \code{Object} ist.
@@ -209,6 +212,7 @@ Im Package \code{java.util.function} ist eine Reihe von Spezialisierungen für I
 Mehrere Klassen varriieren ebenfalls im Rückgabetyp der Methode.
 Händische Spezialisierungen können zwar für verbesserte Performance sorgen, besonders wenn typspezifische Optimierungen vorgenommen werden, erzeugen aber einen erhöhten Wartungsaufwand und sind fehleranfälliger.
 
+% Einfluss von Value Types
 In bisherigen Java-Versionen ist das Problem nur auf die acht primitive Typen beschränkt.
 Reduziert man diese acht auf die drei häufigsten -- \code{int}, \code{long} und \code{double} -- kann die Anzahl der händischen Spezialisierungen eingeschränkt werden.
 Dies ist jedoch nicht mehr möglich, wenn mit Value Types eine unendliche Zahl neuer Typen hinzukomment, die sich ähnlich wie die Primitiven verhalten sollen.
