@@ -230,3 +230,12 @@ Das verringert zwar den Programmieraufwand, sorgt aber dennoch für größere Ar
 Zudem sind die entstehenden Klassen aus Sicht der JVM und anderen Java-ähnlichen Sprachen nicht verwandt, wodurch spezielle Interfaces verwendet werden müssen, wenn beispielsweise ein Wildcard-Typ gebraucht wird.
 Weiterhin wird Reflection erschwert, was in Scala durch eine eigene Reflection-Bibliothek umgangen wird.
 Eine solche Vorgehensweise ist in zukünftigen Java-Versionen aufgrund von Kompatibilitätsbedenken also nicht erstrebenswert.
+
+\subsubsection{Spezialisierung zur Laufzeit}
+
+Eine kompatible und nachhaltige Implementierung von generischer Spezialisierung erfordert folglich Unterstützung durch die Laufzeitumgebung.
+Bereits im Jahr 2014 wurde an einem ersten Prototyp gearbeitet, der Teile der Spezialisierung auf die Laufzeit auslagert~\cite{specialization}.
+Der Java-Compiler erzeugt dann nur eine Bytecode-Datei pro Klasse, von der ausgehend zur Laufzeit Spezialisierungen erzeugt werden, wenn sie benötigt werden.
+Dafür mussten Metadaten im Bytecode-Format hinzugefügt werden, die Angaben über verwendete Typvariablen machen, die bei der reinen Erasure zuvor nicht notwendig waren.
+Ein wichtiges Ziel war es, die Spezialisierung zur Laufzeit so einfach wie möglich zu halten und zusätzliche Verifikation oder komplexe Übersetzungsverfahren zu vermeiden.
+Das sollte die Implementierung vereinfachen und Ladezeiten gering halten, setzte aber bedachte Änderung des Bytecode-Formats voraus. % TODO schwammig
