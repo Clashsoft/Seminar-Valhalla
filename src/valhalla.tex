@@ -130,12 +130,12 @@ Diese Formen sollen mit den bestehenden Namen für primitive und Wrapper-Typen k
 Um das Speicherproblem näher zu erläutern, soll nun ein Beispiel betrachtet werden.
 Es sollen einige ganzzahlige Punkte im zweidimensionalen Raum gespeichert werden, die einen Pfad bilden.
 Die Punkte sind als Objekte mit zwei \code{int}-Feldern modelliert, der Pfad als Array von Punkten.
-Bei einer Pfadlänge von drei berechnet sich der Speicherverbrauch wie folgt: % TODO source
+Bei einer Pfadlänge von drei berechnet sich der Speicherverbrauch wie folgt:
 
 \[ \SI{24}{\byte} \text{(Array-Header)} + 3 \cdot \SI{8}{\byte} \text{(Referenzen im Array)} + 3 \cdot (\SI{16}{\byte} \text{(Objekt-Header)} + 2 \cdot \SI{4}{\byte} \text{(int-Werte)}) = \SI{120}{\byte} \]
 
-Ein Objekt, das zwei \code{int}-Werte beeinhaltet, benötigt auf einer 64-bit \ac{jvm} $\SI{8}{\byte}$ für die Referenz selber, $\SI{16}{\byte}$\footnote{Mit \code{-XX:+UseCompressedOops} könnte dies auf $\SI{12}{\byte}$ reduziert werden, allerdings kommen dann $\SI{4}{\byte}$ Padding hinzu, da die Größere von Objekten im Heap ein Vielfaches von $\SI{8}{\byte}$ sein muss.} für den Objekt-Header und je $\SI{4}{\byte}$ für die beiden \code{int}-Werte.
-Die Größe eines Array-Headers beträgt $\SI{24}{\byte}$.
+Ein Objekt, das zwei \code{int}-Werte beeinhaltet, benötigt auf einer 64-bit \ac{jvm} $\SI{8}{\byte}$ für die Referenz selber, $\SI{16}{\byte}$\footnote{Mit dem \ac{jvm}-Flag \code{-XX:+UseCompressedOops} könnte dies auf $\SI{12}{\byte}$ reduziert werden, allerdings kommen dann $\SI{4}{\byte}$ Padding hinzu, da die Größe von Objekten im Heap ein Vielfaches von $\SI{8}{\byte}$ sein muss~\cite{compressed-oops}.} für den Objekt-Header und je $\SI{4}{\byte}$ für die beiden \code{int}-Werte~\cite{compressed-oops}.
+Die Größe eines Array-Headers beträgt $\SI{24}{\byte}$~\cite{compressed-oops}.
 Mit drei Objekten ergibt sich also insgesamt ein Speicherverbrauch von $\SI{120}{\byte}$.
 
 Das gleiche Beispiel soll nun mit Value-Typen realisiert werden.
