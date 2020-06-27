@@ -174,7 +174,8 @@ So kann beispielsweise eine \code{Map}-Klasse erstelle werden, bei der Schlüsse
 Bei der Verwendung der Klasse werden die Typen festgelegt: \code{Map<String, Integer>}.
 Dadurch kann die Typsicherheit auch bei Datenstrukturen sichergestellt werden.
 
-% Erasure
+\subsubsection{Erasure}
+
 Die Implementierung von generischen Typen erfolgte durch die sogenannte \emph{Erasure}.
 Beim Generieren von Bytecode ersetzt der Java-Compiler sämtliche Vorkommen von generischen Typvariablen durch \code{Object}\footnote{Falls durch die Form \code{<T extends Bound>} ein Bound angegeben wird, steht dieser anstelle von \code{Object}.}.
 Generische Typen konnten so implementiert werden, ohne Änderungen an der \ac{jvm} vornehmen zu müssen.
@@ -203,7 +204,8 @@ Zur Laufzeit kann dies jedoch aufgrund des Boxings die Performance beeinträchti
 Sowohl das Boxing (Anlegen von \code{Integer}-Objekten) als auch das Unboxing (Extrahieren des \code{int}-Werts) benötigt Zeit, besonders aufgrund des Allokations- und Garbage-Collector-Overheads sowie der zusätzlichen Indirektion.
 Der erhöhte Speicherverbrauch, der bereits im vorherigen Unterabschnitt~\ref{subsec:value-types} gezeigt wurde, ist auch hier in ähnlichem Umfang vorhanden.
 
-% Händische Spezialisierungen in Stdlib
+\subsubsection{Händische Spezialisierung}
+
 Aufgrund von Bedenken zu Performance und Speicherverbrauch sind in Java-Bibliotheken häufig händische Spezialisierungen vorhanden.
 Beispiele dafür sind selbst in der Standardbibliothek zu finden.
 So gibt es die Klassen \code{OptionalInt} und \code{IntStream} sowie Äquivalente für \code{long} und \code{double}, die als Ersatz für die in Java 8 eingeführten Klassen \code{Optional} und \code{Stream} dienen und untereinander nicht kompatibel sind~\cite{java-8-docs}.
