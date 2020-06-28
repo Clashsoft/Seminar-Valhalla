@@ -239,3 +239,37 @@ Der Java-Compiler erzeugt dann nur eine Bytecode-Datei pro Klasse, von der ausge
 Dafür mussten Metadaten im Bytecode-Format hinzugefügt werden, die Angaben über verwendete Typvariablen machen, die bei der reinen Erasure zuvor nicht notwendig waren.
 Ein wichtiges Ziel war es, die Spezialisierung zur Laufzeit so einfach wie möglich zu halten und zusätzliche Verifikation oder komplexe Übersetzungsverfahren zu vermeiden.
 Das sollte die Implementierung vereinfachen und Ladezeiten gering halten, setzte aber bedachte Änderung des Bytecode-Formats voraus. % TODO schwammig
+
+% any
+Zum aktuellen Zeitpunkt ist noch keine Syntax für generischen Typen mit Unterstützung von Primitiven definiert.
+Es ist naheliegend, dass aus Kompatibilitätsgründen die bestehende Syntax für Typparameter die Semantik der Erasure beibehalten wird und Spezialisierung explizit aktiviert werden muss.
+Dafür wurde bisher das Schlüsselwort \code{any} verwendet: \code{class Box<any T>}.
+
+% Layers
+Eine weitere vorgeschlagene syntaktische Neuerung sind die \emph{Layers}, welche es ermöglichen, in bestimmten Spezialisierungen neue Methoden hinzuzufügen.
+Sie sind aus dem Problem entstanden, dass die meisten bestehenden generischen Klassen unter der Annahme implementiert wurden, dass sie nur mit Referenztypen verwendet werden.
+So kann beispielsweise die \code{V get(K key)}-Methode der Klasse \code{Map<K, V>} \code{null} zurückgeben, wenn der Schlüssel nicht vorhanden ist.
+Dies ist jedoch nicht möglich, wenn \code{V=int} ist.
+Mithilfe von Layers kann nun festgelegt werden, dass es die \code{get}-Methode nur dann geben soll, wenn \code{V} ein Referenztyp ist.
+Andernfalls könnte eine neue Methode \code{getOrDefault} hinzugefügt werden.
+Listing~\ref{lst:map-layer} zeigt, wie dies im Code definiert werden könnte.
+Das Schlüsselwort \code{layer} gibt hier die Methoden an, die nur in der Spezialisierung für Referenztypen \code{V} existieren sollen.
+Ähnliche Syntax könnte eingesetzt werden, um gänzlich neue Methoden wie \code{List<int>.sum()} hinzuzufügen.
+
+\begin{listing}
+    \begin{minted}{java}
+        interface Map<any K, any V> {
+            V getOrDefault(K key, V defaultValue);
+
+            layer<ref V> {
+                V get(K key);
+
+                default V getOrDefault(K key, V defaultValue) {
+                    return containsKey(key) ? get(key) : defaultValue;
+                }
+            }
+        }
+    \end{minted}
+    \caption{Beispieldefinition des Map-Interfaces mit Layers (aus~\cite{specialization}).}
+    \label{lst:map-layer}
+\end{listing}
