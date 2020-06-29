@@ -22,14 +22,14 @@ In Unterabschnitt~\ref{subsec:primitive-generics} erfolgt eine Vertiefung in die
 
 \subsection{Value Types}\label{subsec:value-types}
 
-Seit der ersten Version von Java im Jahr 1995 verfolgt die Programmiersprache den Ansatz, dass alles außer primitive Werte ein Objekt ist. % TODO schon in Einleitung
+Seit der ersten Version von Java wird der Ansatz verfolgt, dass alles außer primitive Werte ein Objekt ist.
 Das unterscheided Java von Programmiersprachen wie C oder C++, wo primitive Werte sowie durch Klassen und Structs definierte Aggregate davon zunächst nur einfache Werte sind und erst durch Pointer eine Referenzsemantik erhalten.
 
 In Java sind hingegen alle Variablen und Parameter vom Typ einer Klasse implizit Pointer.
 Dies vereinfacht das Programmiermodell und ist weniger fehleranfällig, besonders durch die Präsenz des Garbage Collectors.
 Es führt jedoch auch dazu, dass alle Zugriffe auf Daten in diesen Objekten über Indirektion erfolgen.
-Dies verringert die Lokalität der Daten und führt auf heutiger Hardware, auf der Zugriffe auf den Hauptspeicher wesentlich länger dauern als auf den \ac{cpu}-Cache-Speicher, zu deutlich langsamerer Performance. % TODO ww führt
-Weiterhin erzeugen Referenzen einen deutlichen höheren Speicherverbrauch, wie ein Beispiel zeigen wird. % TODO wo?
+Dies verringert die Lokalität der Daten und resultiert auf heutiger Hardware in deutlich langsamerer Performance.
+Weiterhin erzeugen Referenzen einen deutlichen höheren Speicherverbrauch, wie ein Beispiel unter~\ref{subsubsec:memory-example} zeigen wird.
 Zuletzt sorgt die Allokation und Freigabe des Speichers, besonders bei einer Vielzahl kleiner Objekte, für einen Verwaltungsaufwand seitens des Allocators und Garbage Collectors.
 
 Aufgrund dieser Performance-\ und Speicherbedenken suchen viele Java-Entwickler nach Möglichkeiten, Klassen und Objekte zu umgehen.
@@ -125,7 +125,7 @@ Diese nimmt die Form \code{T.ref} an, wobei \code{T} eine Inline-Klasse bezeichn
 Im Gegensatz dazu steht die Form \code{T.val}, die explizit den Inline-Typ benennt.
 Diese Formen sollen mit den bestehenden Namen für primitive und Wrapper-Typen kompatibel sein -- \code{int.ref} bezeichnet dann den selben Typ wie \code{Integer} und \code{Integer.val} entspricht \code{int}.
 
-\subsubsection{Beispiel zum Speicherverbrauch}
+\subsubsection{Beispiel zum Speicherverbrauch}\label{subsubsec:memory-example}
 
 Um das Speicherproblem näher zu erläutern, soll nun ein Beispiel betrachtet werden.
 Es sollen einige ganzzahlige Punkte im zweidimensionalen Raum gespeichert werden, die einen Pfad bilden.
@@ -238,7 +238,7 @@ Bereits im Jahr 2014 wurde an einem ersten Prototyp gearbeitet, der Teile der Sp
 Der Java-Compiler erzeugt dann nur eine Bytecode-Datei pro Klasse, von der ausgehend zur Laufzeit Spezialisierungen erzeugt werden, wenn sie benötigt werden.
 Dafür mussten Metadaten im Bytecode-Format hinzugefügt werden, die Angaben über verwendete Typvariablen machen, die bei der reinen Erasure zuvor nicht notwendig waren.
 Ein wichtiges Ziel war es, die Spezialisierung zur Laufzeit so einfach wie möglich zu halten und zusätzliche Verifikation oder komplexe Übersetzungsverfahren zu vermeiden.
-Das sollte die Implementierung vereinfachen und Ladezeiten gering halten, setzte aber bedachte Änderung des Bytecode-Formats voraus. % TODO schwammig
+Das sollte die Implementierung vereinfachen und Ladezeiten gering halten, setzte aber bedachte Änderung des Bytecode-Formats voraus.
 
 % any
 Zum aktuellen Zeitpunkt ist noch keine Syntax für generischen Typen mit Unterstützung von Primitiven definiert.
