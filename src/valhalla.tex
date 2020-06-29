@@ -216,7 +216,7 @@ Händische Spezialisierungen können zwar für verbesserte Performance sorgen, b
 
 % Einfluss von Value Types
 In bisherigen Java-Versionen ist das Problem nur auf die acht primitive Typen beschränkt.
-Reduziert man diese acht auf die drei häufigsten -- \code{int}, \code{long} und \code{double} -- kann die Anzahl der händischen Spezialisierungen eingeschränkt werden.
+Werden diese acht auf die drei häufigsten -- \code{int}, \code{long} und \code{double} -- reduziert, kann die Anzahl der händischen Spezialisierungen eingeschränkt werden.
 Dies ist jedoch nicht mehr möglich, wenn mit Value Types eine unendliche Zahl neuer Typen hinzukomment, die sich ähnlich wie die Primitiven verhalten sollen.
 Es wäre nicht sinnvoll, den Speicherverbrauch von Arrays zu verringern, wenn das nicht auch mit Listen möglich ist, da diese in den meisten Fällen die bessere Wahl sind.
 Folglich ist es naheliegend, dass die Änderung von generischen Typen zusammen mit den neuen Value Types eingeführt wird.
