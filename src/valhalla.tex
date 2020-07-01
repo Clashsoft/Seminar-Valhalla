@@ -47,8 +47,7 @@ Weiterhin können sie nicht mehr als Monitor dienen, da ohnehin nicht von zwei T
 Die \code{clone}-Operation ist nicht mehr sinnvoll, ebenso der Finalizer, da die Werte nicht mehr vom Garbage Collector verarbeitet werden.
 Auch \code{null} ist kein gültiger Wert mehr, allerdings wäre eine Alternative möglich, die den Speicher für den Wert auf null setzt.
 Zuletzt kann nicht von Value Types geerbt werden, da im Voraus bekannt sein muss, wie viel Speicherplatz reserviert werden muss, was mit Vererbung nicht statisch entschieden werden könnte.
-Veränderungen der Felder von Werten wirken sich nur auf die lokale Kopie aus, wie es bereits von primitiven Typen bekannt ist.
-Die Veränderung von \code{this} in Methoden eines Value Types ist folglich nicht mehr sinnvoll, wodurch Seiteneffekte vermieden werden und nachvollziehbarer Code entsteht.
+Die Veränderung von Feldern von Werten ist entweder nicht erlaubt oder wirkt sich nur auf lokale Instanzen in Variablen und Parametern aus, da Value Types wie primitive Werte bei jeder Zuweisung kopiert werden.
 
 \subsubsection{Value-basierte Klassen}
 
