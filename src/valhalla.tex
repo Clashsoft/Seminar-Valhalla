@@ -3,6 +3,7 @@
 Das OpenJDK-Projekt \emph{Valhalla}~\cite{openjdk-valhalla} besteht aus drei wesentlichen Neuerungen, die in folgenden \acp{jep} definiert sind:
 
 \begin{itemize}
+    \itemsep0em
     \item \ac{jep} 169: Value Objects~\cite{jep-169}
     \item \ac{jep} 193: Variable Handles~\cite{jep-193}
     \item \ac{jep} 218: Generics over Primitive Types~\cite{jep-218}
@@ -76,19 +77,16 @@ Nach dem Motto ``Codes like a class, works like an int''~\cite{object-model} sol
 \begin{listing}
     \begin{minted}{java}
         inline class Point {
-            private int x;
-            private int y;
+            private int x, y;
 
-            public Point(int x, int y) {
-                this.x = x;
-                this.y = y;
-            }
+            public Point(int x, int y) { this.x = x; this.y = y; }
 
             public int x() { return x; }
             public int y() { return y; }
         }
     \end{minted}
-    \caption{Beispiel für eine Inline-Klasse (aus~\cite{object-model})}
+    \vspace{-3ex}
+    \caption{Beispiel für eine Inline-Klasse (angepasst aus~\cite{object-model})}
     \label{inline-class-example}
 \end{listing}
 
@@ -160,6 +158,7 @@ Die Höhe der Rechtecke mit Zahlen entspricht hier $\SI{4}{\byte}$.
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{img/memory-usage.pdf}
+    \vspace{-3ex}
     \caption{Vergleich des Speicherlayouts eines Arrays von Punkten heute und mit Value Types}
     \label{fig:memory-usage}
 \end{figure}
@@ -276,6 +275,7 @@ Das Schlüsselwort \code{layer} gibt hier die Methoden an, die nur in der Spezia
             }
         }
     \end{minted}
+    \vspace{-3ex}
     \caption{Beispieldefinition des Map-Interfaces mit Layers (aus~\cite{specialization}).}
     \label{lst:map-layer}
 \end{listing}
