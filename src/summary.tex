@@ -2,8 +2,8 @@
 
 % Zusammenfassung
 Aus dem Wunsch, die Sprache Java auf das Speichermodell von heutiger Hardware zu modernisieren, hat sich mit Valhalla ein großes und aufwendiges Projekt entwickelt.
-Mit den Value Types bedarf es zwar nur kleine syntaktische Änderungen an Java selbst, dafür jedoch weitreichende Änderungen der \ac{jvm}.
-Umso mehr sprachliche Neuerungen und Probleme entstehen jedoch durch die generische Spezialisierung, welche zunächst nur für primitiven Datentypen interessant ist, mit der Einführung von Value Types jedoch eine Notwendigkeit für deren Nützlichkeit wird.
+Die Value Types erfordern zwar nur kleine syntaktische Änderungen, dafür jedoch weitreichende Änderungen der \ac{jvm}.
+Umso mehr sprachliche Neuerungen und Probleme entstehen jedoch durch die generische Spezialisierung, die zunächst nur für primitiven Datentypen interessant ist, aber große Bedeutung für den Erfolg von Value Types hat.
 
 Seit die Entwicklung des Projekts im Jahre 2014 begann, wurden viele Lösungansätze untersucht und in Form verschiedener Prototypen umgesetzt.
 Da stets die Kompatibilität im Vordergrund stand, mussten die weitreichenden Änderungen genau abgewägt und analysiert werden.
@@ -14,5 +14,4 @@ Auch auf dem Weg zur generischen Spezialisierung sind viele Prototypen entstande
 Der neueste Ansatz der Spezialisierung zur Laufzeit verlangt zwar einen hohen Implementierungsaufwand seitens der \ac{jvm}-Autoren, bietet aber bessere Optimierungsmöglichkeiten als andere Ansätze.
 % Ausblick
 Insgesamt ist die Implementierung der generischen Spezialisierung stark von der Umsetzung der Value Types abhängig.
-Daher ist es naheliegend, dass letztere derzeit priorisiert bearbeitet werden.
-Es ist derzeit nicht absehbar, wann die beiden Features in einer Java-Version veröffentlich werden.
+Da jedoch beide Projekt noch unvollständig umgesetzt sind, ist derzeit nicht absehbar, wann die beiden Features in einer Java-Version veröffentlich werden.
