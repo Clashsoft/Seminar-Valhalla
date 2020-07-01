@@ -13,7 +13,7 @@ Grundlage für die Änderungen des Projekts stellen die \emph{Value Objects} dar
 Deren Ziel ist es, die \ac{jvm} mit Unterstützung für neue benutzerdefinierbare Typen zu erweitern, den \emph{Value Types}.
 Diese haben im Vergleich zu bestehenden Klassen keine Referenzsemantik, sondern verhalten sich wie primitive Datentypen.
 \ac{jep} 169 selber beschäftigt sich nur mit einer kleinen Erweiterung der \ac{jvm} in diese Richtung.
-Unterabschnitt~\ref{subsec:value-types} betrachtet die Value Types als Ganzes.
+Unterabschnitt~\ref{subsec:value-types} betrachtet die Value Types als Gesamtkonzept.
 
 Die \emph{Variable Handles} bezeichnen einen Teil der Java-Standardbibliothek, die präziseren Zugriff auf Felder von Objekten und Array-Elementen ermöglichen.
 Die Implementierung der \ac{api} erfolgte bereits in Java 9 und wird daher nicht näher in dieser Arbeit betrachtet.
@@ -25,10 +25,10 @@ In Unterabschnitt~\ref{subsec:primitive-generics} erfolgt eine Vertiefung in die
 \subsection{Value Types}\label{subsec:value-types}
 
 Seit der ersten Version von Java wird der Ansatz verfolgt, dass alles außer primitive Werte ein Objekt ist.
-Das unterscheided Java von Programmiersprachen wie C oder C++, wo primitive Werte sowie durch Klassen und Structs definierte Aggregate davon zunächst nur einfache Werte sind und erst durch Pointer eine Referenzsemantik erhalten.
+Das unterscheided Java von Programmiersprachen wie C oder C++, wo primitive Werte sowie Klassen und Structs zunächst nur einfache Werte sind und erst durch Pointer eine Referenzsemantik erhalten.
 
-In Java sind hingegen alle Variablen und Parameter vom Typ einer Klasse implizit Pointer.
-Dies vereinfacht das Programmiermodell und ist weniger fehleranfällig, besonders durch den Garbage Collectors.
+In Java sind hingegen alle Variablen und Parameter vom Typ einer Klasse implizit Pointer, die automatisch von der \ac{jvm} verwaltet werden.
+Dies vereinfacht das Programmiermodell und ist weniger fehleranfällig, besonders durch den Garbage Collector.
 Es führt jedoch auch dazu, dass alle Zugriffe auf Daten in diesen Objekten über Indirektion erfolgen.
 Dies verringert die Lokalität der Daten und resultiert auf heutiger Hardware in deutlich langsamerer Performance.
 Weiterhin erzeugen Referenzen einen deutlichen höheren Speicherverbrauch, wie ein Beispiel unter~\ref{subsubsec:memory-example} zeigen wird.
@@ -43,25 +43,25 @@ Value Types sollen dies vermeiden.
 Es soll nun betrachtet werden, was Value Types von regulären Referenztypen unterscheided.
 Größter Unterschied ist, dass nun keine Pointer mehr verwendet werden, ohne die sich einige grundlegende Konzepte ändern.
 So besitzen Werte keine Identität mehr, die verglichen werden könnte, und damit auch keinen Identitäts-Hashcode.
-Weiterhin können sie nicht mehr als Monitor dienen, da ohnehin nicht von zwei Threads darauf zugegriffen werden kann.
-Die \code{clone}-Operation ist nicht mehr sinnvoll, ebenso der Finalizer, da die Werte nicht mehr vom Garbage Collector verarbeitet werden.
-Auch \code{null} ist kein gültiger Wert mehr, allerdings wäre eine Alternative möglich, die den Speicher für den Wert auf null setzt.
-Zuletzt kann nicht von Value Types geerbt werden, da im Voraus bekannt sein muss, wie viel Speicherplatz reserviert werden muss, was mit Vererbung nicht statisch entschieden werden könnte.
 Die Veränderung von Feldern von Werten ist entweder nicht erlaubt oder wirkt sich nur auf lokale Instanzen in Variablen und Parametern aus, da Value Types wie primitive Werte bei jeder Zuweisung kopiert werden.
+Durch die Kopier-Semantik können Werte nicht mehr als Monitor für die Synchronisierung dienen und auch die \code{clone}-Operation nicht mehr sinnvoll.
+Ebenso ist der Finalizer nun überflüssig, da die Werte nicht mehr vom Garbage Collector verarbeitet werden.
+Auch \code{null} ist kein gültiger Wert mehr, allerdings wäre eine Alternative möglich, die den Speicher für den Wert auf null setzt.
+Zuletzt kann nicht von Value Types geerbt werden, da im Voraus bekannt sein muss, wie viel Speicherplatz reserviert werden muss, was mit Vererbung nicht statisch entschieden werden kann.
 
 \subsubsection{Value-basierte Klassen}
 
 Seit Java 8 definiert die Sprache bereits ein Konzept, das den Value Types ähnelt: die Value-basierten Klassen~\cite{value-based-classes}.
 Dabei handelt es sich um eine Konvention, die von einigen Klassen der Standardbibliothek eingehalten wird und auch für Bibliotheksautoren und andere Endbenutzer der Sprache verfügbar ist.
-Wesentlich bei Value-basierten Klassen ist der Einsatz von Feldern, die \code{final} sind, wodurch Instanzen dieser Klassen unveränderbar werden.
+Wesentlich bei Value-basierten Klassen ist der Einsatz von Feldern, die \code{final} sind, wodurch Instanzen dieser Klassen unveränderbar sind.
 Weiterhin dürfen diese Klassen keinen öffentlich zugänglichen Konstruktor besitzen, sondern müssen stets über eine Factory-Methode instanziiert werden.
 Dadurch müssen keine Garantien über die Identität erstellter Objekte gemacht werden.
 Die Factory-Methode kann beispielsweise ihre Rückgabewerte in einem Cache speichern.
 Aufgrund der fehlenden Identität ist es nicht sinnvoll, Identitätsvergleiche mit \code{==} durchzuführen.
 Folglich müssen stets \code{equals} und \code{hashCode} implementiert werden.
-Identitäts-basierten Operationen und Synchronisierung auf Value-basierten Klassen sind zwar derzeit nicht verboten, da es sich um eine Konvention handelt, können aber zu unerwarteten Ergebnissen führen.
-Somit erfüllen Value-basierte Klassen fast alle zuvor genannten Punkte zur Pointerfreiheit.
-Ausnahmen sind \code{null} als erlaubter Wert sowie die erlaubte Vererbung.
+Identitäts-basierte Operationen und Synchronisierung auf Value-basierten Klassen sind zwar derzeit nicht verboten, da es sich um eine Konvention handelt, können aber zu unerwarteten Ergebnissen führen.
+Somit erfüllen Value-basierte Klassen fast alle zuvor genannten Punkte, durch die sich Value Types von Referenztypen unterscheiden.
+Ausnahmen sind \code{null} als möglicher Wert sowie die erlaubte Vererbung.
 Beides ist jedoch bei derzeitigen Beispielen für Value-basierte Klassen wie \code{Integer} und \code{Optional} ohnehin nicht üblich.
 
 \subsubsection{Inline-Klassen}
@@ -94,7 +94,7 @@ Nun wird zwischen Inline- und Referenz-Typen unterschieden;
 die primitiven Typen werden den Inline-Typen untergeordnet.
 % T.default
 Weiterhin kann nun für alle Typen ein Default-Wert definiert werden, der mit \code{T.default} bezeichnet wird.
-Für primitive Typen bleibt dieser \code{0} oder \code{false}, während Referenztypen \code{null} erlauben.
+Für primitive Typen bleibt dieser \code{0} oder \code{false}, während Referenztypen \code{null} beibehalten.
 Inline-Typen definieren ihren Default-Wert als eine Instanz, bei der alle Felder mit dem jeweiligen Default-Wert belegt sind.
 
 % Marker interfaces
@@ -116,7 +116,7 @@ Das hat zur Folge, dass Array-Typen anders voneinander erben.
 Insbesondere kann nun ein \code{int[]} direkt in ein \code{Integer[]} oder ein \code{Object[]} umgewandelt werden.
 Ein ähnliches Verhalten zeigen die benutzerdefinierten Inline-Klassen.
 % Referenz-Wrapper T.ref
-Anders als bei primitiven Typen gibt es jedoch dabei keine explizit definierten Referenz-Wrapper.
+Anders als bei primitiven Typen gibt es jedoch dafür keine explizit definierten Referenz-Wrapper.
 Stattdessen soll neue Syntax hinzugefügt werden, mit der Referenz-Wrapper für Inline-Klassen benannt werden können.
 Diese nimmt die Form \code{T.ref} an, wobei \code{T} eine Inline-Klasse bezeichnet.
 Im Gegensatz dazu steht die Form \code{T.val}, die explizit den Inline-Typ benennt.
@@ -146,8 +146,8 @@ Der neue Speicherverbrauch berechnet sich also wie folgt:
 \end{equation}
 
 Folglich konnten $\SI{72}{\byte}$ eingespart werden.
-Zu beachten ist auch, dass die gesamten Daten des Arrays mit einer Größe von $\SI{48}{\byte}$ in eine Cache-Zeile passen, wenn bei deren Größe von $\SI{64}{\byte}$ ausgangen wird.
 Der Effekt wird verstärkt, wenn das Array mehr Elemente enthält.
+Zu beachten ist auch, dass die gesamten Daten des Arrays mit einer Größe von $\SI{48}{\byte}$ in eine Cache-Zeile passen, wenn bei deren Größe von $\SI{64}{\byte}$ ausgangen wird.
 
 In Abbildung~\ref{fig:memory-usage} erfolgt eine grafische Darstellung des verringerten Speicherverbrauchs.
 Sie zeigt links das Speicherlayout in heutigen \acp{jvm} und rechts das Speicherlayout, wenn Value Types für die Punkte verwendet werden.
@@ -172,7 +172,7 @@ Letztere benötigen jedoch besondere Sprachunterstützung, die noch nicht Teil d
 Generische Typen sind ein Feature, das bereits in Java 5 eingeführt wurde.
 Sie ermöglichen es, Klassen und Methoden zu definieren, die über verwendete Typen abstrahieren.
 Dabei kommen Typparameter als Platzhalter zum Einsatz.
-So kann beispielsweise eine \code{Map}-Klasse erstelle werden, bei der Schlüssel und Werte beliebig, aber fest typisiert sind.
+So kann beispielsweise eine \code{Map}-Klasse erstellt werden, bei der Schlüssel und Werte beliebig, aber fest typisiert sind.
 Bei der Verwendung der Klasse werden die Typen festgelegt: \code{Map<String, Integer>}.
 Dadurch können typsichere Datenstrukturen definiert werden.
 
@@ -197,7 +197,7 @@ Es sollte vermieden werden, dass Entwickler sämtlichen Code neu kompilieren mü
 % Keine generischen Typen mit Primitives
 Eine Limitierung der Erasure ist, dass primitive Typen nicht als Typparameter verwendet werden können.
 So erzeugt der Compiler derzeit einen Error, wenn der Typ \code{List<int>} verwendet wird.
-Das liegt daran, dass der Typ \code{int} selber derzeit nicht kompatibel mit \code{Object} ist.
+Das liegt daran, dass der Typ \code{int} derzeit nicht kompatibel mit \code{Object} ist.
 Nur durch Boxing kann die Umwandlung \code{int <-> Integer <-> Object} geschehen.
 Dies kann aber in generischen Klassen nicht sichergestellt werden, solange der konkrete Typ nicht bekannt ist.
 Folglich muss statt \code{List<int>} eine \code{List<Integer>} verwendet werden.
@@ -218,7 +218,7 @@ Händische Spezialisierungen können zwar für verbesserte Performance sorgen, b
 % Einfluss von Value Types
 In bisherigen Java-Versionen ist das Problem nur auf die acht primitiven Typen beschränkt.
 Werden diese acht auf die drei häufigsten -- \code{int}, \code{long} und \code{double} -- reduziert, kann die Anzahl der händischen Spezialisierungen eingeschränkt werden.
-Dies ist jedoch nicht mehr möglich, wenn mit Value Types eine unendliche Zahl neuer Typen hinzukomment, die sich ähnlich wie die Primitiven verhalten sollen.
+Dies ist jedoch nicht mehr möglich, wenn mit Value Types eine unendliche Zahl neuer Typen hinzukomment, die sich ähnlich wie primitive verhalten sollen.
 Es wäre nicht sinnvoll, den Speicherverbrauch von Arrays zu verringern, wenn das nicht auch mit Listen möglich ist, da diese in den meisten Fällen die bessere Wahl sind.
 Folglich ist es naheliegend, dass die Änderung von generischen Typen zusammen mit den neuen Value Types eingeführt wird.
 
@@ -226,7 +226,7 @@ Folglich ist es naheliegend, dass die Änderung von generischen Typen zusammen m
 
 Ein Ansatz, der das Wartungsproblem der händische Spezialisierung vermeidet, ist Spezialisierung durch den Compiler.
 Dabei erzeugt der Compiler aus einer Quellcode-Datei mehrere Bytecode-Dateien für eine vorgegebene Menge von Typen.
-Dies kommt beispielsweise in der \ac{jvm}-Sprache \emph{Scala} zum Einsatz, in der mit einer Annotation an einem Typparameter Spezialisierungen festgelegt werden können~\cite{scala-specialized}.
+Dies kommt beispielsweise in der \ac{jvm}-Sprache \emph{Scala} zum Einsatz, in der Spezialisierungen mit einer Annotation an einem Typparameter festgelegt werden können~\cite{scala-specialized}.
 Das verringert zwar den Programmieraufwand, sorgt aber dennoch für größere Artefakte aufgrund des duplizierten Bytecodes.
 Zudem sind die entstehenden Klassen aus Sicht der \ac{jvm} und anderen Java-ähnlichen Sprachen nicht verwandt, wodurch spezielle Interfaces verwendet werden müssen, wenn beispielsweise ein Wildcard-Typ gebraucht wird.
 Weiterhin wird Reflection erschwert, was in Scala durch eine eigene Reflection-Bibliothek umgangen wird.
@@ -236,7 +236,7 @@ Eine solche Vorgehensweise ist in zukünftigen Java-Versionen aufgrund von Kompa
 
 Eine kompatible und nachhaltige Implementierung von generischer Spezialisierung erfordert folglich Unterstützung durch die Laufzeitumgebung.
 Bereits im Jahr 2014 wurde an einem ersten Prototyp gearbeitet, der Teile der Spezialisierung auf die Laufzeit auslagert~\cite{specialization}.
-Der Java-Compiler erzeugt dann nur eine Bytecode-Datei pro Klasse, von der ausgehend zur Laufzeit Spezialisierungen erzeugt werden, wenn sie benötigt werden.
+Der Java-Compiler erzeugt dann nur eine Bytecode-Datei pro Klasse, von der ausgehend Spezialisierungen zur Laufzeit erzeugt werden, wenn sie benötigt werden.
 Dafür mussten Metadaten im Bytecode-Format hinzugefügt werden, die Angaben über verwendete Typparameter machen, die bei der reinen Erasure zuvor nicht notwendig waren.
 Ein wichtiges Ziel war es, die Spezialisierung zur Laufzeit so einfach wie möglich zu halten und zusätzliche Verifikation oder komplexe Übersetzungsverfahren zu vermeiden.
 Das sollte die Implementierung vereinfachen und Ladezeiten gering halten, setzte aber bedachte Änderung des Bytecode-Formats voraus.
@@ -244,7 +244,7 @@ Das sollte die Implementierung vereinfachen und Ladezeiten gering halten, setzte
 \subsubsection{Syntaktische Neuerungen}
 
 % any
-Zum aktuellen Zeitpunkt ist noch keine Syntax für generischen Typen mit Unterstützung von Primitiven festgelegt.
+Zum aktuellen Zeitpunkt ist noch keine endgültige Syntax für generischen Typen mit Spezialisierung festgelegt.
 Es ist naheliegend, dass aus Kompatibilitätsgründen die bestehende Syntax für Typparameter die Semantik der Erasure beibehalten wird und Spezialisierung explizit aktiviert werden muss.
 Dafür wurde in der Literatur zu Valhalla vorläufig das Schlüsselwort \code{any} verwendet: \code{class Box<any T>}.
 
