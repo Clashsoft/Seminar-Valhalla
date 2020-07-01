@@ -9,7 +9,8 @@ Das OpenJDK-Projekt \emph{Valhalla}~\cite{openjdk-valhalla} besteht aus drei wes
 \end{itemize}
 
 Grundlage für die Änderungen des Projekts stellen die \emph{Value Objects} dar.
-Deren Ziel ist es, die \ac{jvm} mit Unterstützung für neue benutzerdefinierbare Typen zu erweitern, die im Vergleich zu bestehenden Klassen keine Referenzsemantik haben, sondern sich wie primitive Datentypen verhalten.
+Deren Ziel ist es, die \ac{jvm} mit Unterstützung für neue benutzerdefinierbare Typen zu erweitern, den \emph{Value Types}.
+Diese haben im Vergleich zu bestehenden Klassen keine Referenzsemantik, sondern verhalten sich wie primitive Datentypen.
 \ac{jep} 169 selber beschäftigt sich nur mit einer kleinen Erweiterung der \ac{jvm} in diese Richtung.
 Unterabschnitt~\ref{subsec:value-types} betrachtet die Value Types als Ganzes.
 
@@ -26,7 +27,7 @@ Seit der ersten Version von Java wird der Ansatz verfolgt, dass alles außer pri
 Das unterscheided Java von Programmiersprachen wie C oder C++, wo primitive Werte sowie durch Klassen und Structs definierte Aggregate davon zunächst nur einfache Werte sind und erst durch Pointer eine Referenzsemantik erhalten.
 
 In Java sind hingegen alle Variablen und Parameter vom Typ einer Klasse implizit Pointer.
-Dies vereinfacht das Programmiermodell und ist weniger fehleranfällig, besonders durch die Präsenz des Garbage Collectors.
+Dies vereinfacht das Programmiermodell und ist weniger fehleranfällig, besonders durch den Garbage Collectors.
 Es führt jedoch auch dazu, dass alle Zugriffe auf Daten in diesen Objekten über Indirektion erfolgen.
 Dies verringert die Lokalität der Daten und resultiert auf heutiger Hardware in deutlich langsamerer Performance.
 Weiterhin erzeugen Referenzen einen deutlichen höheren Speicherverbrauch, wie ein Beispiel unter~\ref{subsubsec:memory-example} zeigen wird.
@@ -46,7 +47,7 @@ Weiterhin können sie nicht mehr als Monitor dienen, da ohnehin nicht von zwei T
 Die \code{clone}-Operation ist nicht mehr sinnvoll, ebenso der Finalizer, da die Werte nicht mehr vom Garbage Collector verarbeitet werden.
 Auch \code{null} ist kein gültiger Wert mehr, allerdings wäre eine Alternative möglich, die den Speicher für den Wert auf null setzt.
 Zuletzt kann nicht von Value Types geerbt werden, da im Voraus bekannt sein muss, wie viel Speicherplatz reserviert werden muss, was mit Vererbung nicht statisch entschieden werden könnte.
-Veränderungen der Felder von Werten würde sich nur auf die lokale Kopie auswirken, wie es bereits von primitiven Typen bekannt ist.
+Veränderungen der Felder von Werten wirken sich nur auf die lokale Kopie aus, wie es bereits von primitiven Typen bekannt ist.
 Die Veränderung von \code{this} in Methoden eines Value Types ist folglich nicht mehr sinnvoll, wodurch Seiteneffekte vermieden werden und nachvollziehbarer Code entsteht.
 
 \subsubsection{Value-basierte Klassen}
@@ -59,10 +60,10 @@ Dadurch müssen keine Garantien über die Identität erstellter Objekte gemacht 
 Die Factory-Methode kann beispielsweise ihre Rückgabewerte in einem Cache speichern.
 Aufgrund der fehlenden Identität ist es nicht sinnvoll, Identitätsvergleiche mit \code{==} durchzuführen.
 Folglich müssen stets \code{equals} und \code{hashCode} implementiert werden.
-Die Verwendung von Identitäts-basierten Operationen und Synchronisierung auf Value-basierten Klassen ist zwar derzeit nicht verboten, da es sich um eine Konvention handelt, kann aber zu unerwarteten Ergebnissen führen.
+Identitäts-basierten Operationen und Synchronisierung auf Value-basierten Klassen sind zwar derzeit nicht verboten, da es sich um eine Konvention handelt, können aber zu unerwarteten Ergebnissen führen.
 Somit erfüllen Value-basierte Klassen fast alle zuvor genannten Punkte zur Pointerfreiheit.
-Ausnahme ist die Verwendung von \code{null} als erlaubter Wert sowie die Möglichkeit zur Vererbung.
-Dies ist jedoch bei derzeitigen Beispielen für Value-basierte Klassen wie \code{java.lang.Integer} und \code{java.util.Optional} ohnehin nicht üblich.
+Ausnahmen sind \code{null} als erlaubter Wert sowie die erlaubte Vererbung.
+Beides ist jedoch bei derzeitigen Beispielen für Value-basierte Klassen wie \code{java.lang.Integer} und \code{java.util.Optional} ohnehin nicht üblich.
 
 \subsubsection{Inline-Klassen}
 
@@ -106,14 +107,14 @@ Dafür werden neue Interfaces eingeführt, von denen automatisch und implizit al
 \code{IdentityObject} für Referenzen und \code{InlineObject} für Inline-Klassen.
 So kann entschieden werden, ob Identitätsoperationen wie \code{==} oder Synchronisierung sinnvoll sind.
 % Interfaces + Klassenvererbung
-Inline-Klassen dürfen auch von regulären Interfaces erben.
-Ebenfalls soll es möglich sein, sie von Klassen erben zu lassen, solange diese nicht den Anforderungen an Inline-Klassen widersprechen.
+Inline-Klassen dürfen auch reguläre Interfaces implementieren.
+Ebenfalls können sie von Klassen ohne \code{inline} erben, solange diese nicht den Anforderungen an Inline-Klassen widersprechen.
 Nicht erlaubt wären beispielsweise Superklassen mit nicht-finalen Feldern oder Methoden, die \code{synchronized} sind.
 Ein Beispiel für eine Klasse, welche die Anforderungen erfüllt, ist \code{Object}, von der weiterhin alle Klassen erben.
 
 % Boxing
 Mit der Unterordnung von primitiven Typen werden auch diese ohne Boxing von \code{Object} erben.
-Boxing wird dann zu einer Operation, die von der \ac{jvm} intern durchgeführt wird und nicht mehr nur durch den Compiler implementierter syntaktischer Zucker ist.
+Boxing wird dann zu einer Operation, die von der \ac{jvm} intern durchgeführt wird und nicht mehr nur durch den Compiler bereitgestellter syntaktischer Zucker ist.
 % Arrays
 Das hat zur Folge, dass Array-Typen anders voneinander erben.
 Insbesondere kann nun ein \code{int[]} direkt in ein \code{Integer[]} oder ein \code{Object[]} umgewandelt werden.
@@ -138,7 +139,7 @@ Ein Objekt, das zwei \code{int}-Werte beeinhaltet, benötigt auf einer 64-bit \a
 Die Größe eines Array-Headers beträgt $\SI{24}{\byte}$~\cite{compressed-oops}.
 Mit drei Objekten ergibt sich also insgesamt ein Speicherverbrauch von $\SI{120}{\byte}$.
 
-Das gleiche Beispiel soll nun mit Value-Typen realisiert werden.
+Das gleiche Beispiel soll nun mit Value Types realisiert werden.
 Dabei entfallen die Objekt-Header und Referenzen vollständig.
 Der neue Speicherverbrauch berechnet sich also wie folgt:
 
@@ -169,21 +170,21 @@ Letztere benötigen jedoch besondere Sprachunterstützung, die noch nicht Teil d
 
 Generische Typen sind ein Feature, das bereits in Java 5 eingeführt wurde.
 Sie ermöglichen es, Klassen und Methoden zu definieren, die über verwendete Typen abstrahieren.
-Dabei kommen Typvariablen als Platzhalter zum Einsatz.
-So kann beispielsweise eine \code{Map}-Klasse erstelle werden, bei der Schlüssel und Werte beliebig aber fest typisiert sind.
+Dabei kommen Typparameter als Platzhalter zum Einsatz.
+So kann beispielsweise eine \code{Map}-Klasse erstelle werden, bei der Schlüssel und Werte beliebig, aber fest typisiert sind.
 Bei der Verwendung der Klasse werden die Typen festgelegt: \code{Map<String, Integer>}.
-Dadurch kann die Typsicherheit auch bei Datenstrukturen sichergestellt werden.
+Dadurch können typsichere Datenstrukturen definiert werden.
 
 \subsubsection{Erasure}
 
 Die Implementierung von generischen Typen erfolgte durch die sogenannte \emph{Erasure}.
-Beim Generieren von Bytecode ersetzt der Java-Compiler sämtliche Vorkommen von generischen Typvariablen durch \code{Object}\footnote{Falls durch die Form \code{<T extends Bound>} ein Bound angegeben wird, steht dieser anstelle von \code{Object}.}.
+Beim Generieren von Bytecode ersetzt der Java-Compiler sämtliche Vorkommen von generischen Typparametern durch \code{Object}\footnote{Falls durch die Form \code{<T extends Bound>} ein Bound angegeben wird, wird der Typparameter durch diesen statt \code{Object} ersetzt.}.
 Generische Typen konnten so implementiert werden, ohne Änderungen an der \ac{jvm} vornehmen zu müssen.
-Erasure steht im Kontrast zur Spezialisierung, bei der Typvariablen wie bei einer Vorlage durch die konkreten Typen ersetzt werden, als wären sie direkt in der Klasse oder Methode verwendet worden.
+Erasure steht im Kontrast zur Spezialisierung, bei der Typparameter wie bei einer Vorlage durch die konkreten Typen ersetzt werden, als wären sie direkt in der Klasse oder Methode verwendet worden.
 Dieser Ansatz wird beispielsweise von C++ benutzt.
 Er hat den Vorteil, dass typspezifische Optimierungen durchgeführt werden können und Spezialisierungen eigene Methoden und sonstige Funktionalität bereitstellen können.
-Nachteile ist jedoch die Duplizierung von Code, wodurch Binärdateien größer werden.
-Zudem sind sogenannte \emph{Wildcard-Typen} mit Spezialisierung nicht möglich.
+Nachteil ist jedoch die Duplizierung von Code, wodurch Binärdateien größer werden.
+Zudem sind sogenannte \emph{Wildcard-Typen} mit vollständiger Spezialisierung nicht möglich.
 Ein Wildcard-Typ wie \code{List<?>} bildet in Java einen gemeinsamen Supertyp von \code{List<Integer>} und \code{List<String>}.
 
 % Migration mit Erasure
@@ -191,11 +192,10 @@ Erasure ermöglichte ferner den Entwicklern, schrittweise auf generische Typen u
 Die Benutzung von \code{Map} war weiterhin ohne Angabe der Schlüssel- und Wert-Typen erlaubt -- dies wird als Raw Type bezeichnet und verhält sich ähnlich wie \code{Map<Object, Object>}.
 Die Wahrung der Kompatibilität war ein besonderes Ziel bei der Entwicklung der generischen Typen.
 Es sollte vermieden werden, dass Entwickler sämtlichen Code neu kompilieren müssen.
-Dies wurde durch Erasure ermöglicht.
 
 % Keine generischen Typen mit Primitives
-Eine Limitierung, die durch Erasure entsteht, ist die Unmöglichkeit der Verwendung von primitiven Typen als Typparameter.
-So ist es derzeit ein Error, den Typ \code{List<int>} zu verwenden.
+Eine Limitierung der Erasure ist, dass primitive Typen nicht als Typparameter verwendet werden können.
+So erzeugt der Compiler derzeit einen Error, wenn der Typ \code{List<int>} verwendet wird.
 Das liegt daran, dass der Typ \code{int} selber derzeit nicht kompatibel mit \code{Object} ist.
 Nur durch Boxing kann die Umwandlung \code{int <-> Integer <-> Object} geschehen.
 Dies kann aber in generischen Klassen nicht sichergestellt werden, solange der konkrete Typ nicht bekannt ist.
@@ -206,16 +206,16 @@ Der erhöhte Speicherverbrauch, der bereits im vorherigen Unterabschnitt~\ref{su
 
 \subsubsection{Händische Spezialisierung}
 
-Aufgrund von Bedenken zu Performance und Speicherverbrauch sind in Java-Bibliotheken häufig händische Spezialisierungen vorhanden.
+Aufgrund von Bedenken zu Performance und Speicherverbrauch sind in Java-Bibliotheken häufig händische Spezialisierungen vertreten.
 Beispiele dafür sind selbst in der Standardbibliothek zu finden.
-So gibt es die Klassen \code{OptionalInt} und \code{IntStream} sowie Äquivalente für \code{long} und \code{double}, die als Ersatz für die in Java 8 eingeführten Klassen \code{Optional} und \code{Stream} dienen und untereinander nicht kompatibel sind~\cite{java-8-docs}.
-Das Problem wird verstärkt, wenn die zu spezialisierende Klasse mehr als einen Typ-Parameter hat.
+So gibt es die Klassen \code{OptionalInt} und \code{IntStream} sowie Äquivalente für \code{long} und \code{double}, die als Ersatz für die in Java 8 eingeführten Klassen \code{Optional<T>} und \code{Stream<T>} dienen und untereinander nicht kompatibel sind~\cite{java-8-docs}.
+Das Problem wird verstärkt, wenn die zu spezialisierende Klasse mehr als einen Typparameter hat.
 Im Package \code{java.util.function} ist eine Reihe von Spezialisierungen für Interfaces vorhanden, die je eine Methode mit null, einem oder zwei Parametern bereitstellen, deren Typen generisch sind.
-Mehrere Klassen varriieren ebenfalls im Rückgabetyp der Methode.
+Mehrere Klassen variieren ebenfalls im Rückgabetyp der Methode.
 Händische Spezialisierungen können zwar für verbesserte Performance sorgen, besonders wenn typspezifische Optimierungen vorgenommen werden, erzeugen aber einen erhöhten Wartungsaufwand und sind fehleranfälliger.
 
 % Einfluss von Value Types
-In bisherigen Java-Versionen ist das Problem nur auf die acht primitive Typen beschränkt.
+In bisherigen Java-Versionen ist das Problem nur auf die acht primitiven Typen beschränkt.
 Werden diese acht auf die drei häufigsten -- \code{int}, \code{long} und \code{double} -- reduziert, kann die Anzahl der händischen Spezialisierungen eingeschränkt werden.
 Dies ist jedoch nicht mehr möglich, wenn mit Value Types eine unendliche Zahl neuer Typen hinzukomment, die sich ähnlich wie die Primitiven verhalten sollen.
 Es wäre nicht sinnvoll, den Speicherverbrauch von Arrays zu verringern, wenn das nicht auch mit Listen möglich ist, da diese in den meisten Fällen die bessere Wahl sind.
@@ -225,7 +225,7 @@ Folglich ist es naheliegend, dass die Änderung von generischen Typen zusammen m
 
 Ein Ansatz, der das Wartungsproblem der händische Spezialisierung vermeidet, ist Spezialisierung durch den Compiler.
 Dabei erzeugt der Compiler aus einer Quellcode-Datei mehrere Bytecode-Dateien für eine vorgegebene Menge von Typen.
-Dies kommt beispielsweise in der \ac{jvm}-Sprache \emph{Scala} zum Einsatz, in der mit einer Annotation an einem Typ-Parameter Spezialisierungen festgelegt werden können~\cite{scala-specialized}.
+Dies kommt beispielsweise in der \ac{jvm}-Sprache \emph{Scala} zum Einsatz, in der mit einer Annotation an einem Typparameter Spezialisierungen festgelegt werden können~\cite{scala-specialized}.
 Das verringert zwar den Programmieraufwand, sorgt aber dennoch für größere Artefakte aufgrund des duplizierten Bytecodes.
 Zudem sind die entstehenden Klassen aus Sicht der \ac{jvm} und anderen Java-ähnlichen Sprachen nicht verwandt, wodurch spezielle Interfaces verwendet werden müssen, wenn beispielsweise ein Wildcard-Typ gebraucht wird.
 Weiterhin wird Reflection erschwert, was in Scala durch eine eigene Reflection-Bibliothek umgangen wird.
@@ -236,19 +236,19 @@ Eine solche Vorgehensweise ist in zukünftigen Java-Versionen aufgrund von Kompa
 Eine kompatible und nachhaltige Implementierung von generischer Spezialisierung erfordert folglich Unterstützung durch die Laufzeitumgebung.
 Bereits im Jahr 2014 wurde an einem ersten Prototyp gearbeitet, der Teile der Spezialisierung auf die Laufzeit auslagert~\cite{specialization}.
 Der Java-Compiler erzeugt dann nur eine Bytecode-Datei pro Klasse, von der ausgehend zur Laufzeit Spezialisierungen erzeugt werden, wenn sie benötigt werden.
-Dafür mussten Metadaten im Bytecode-Format hinzugefügt werden, die Angaben über verwendete Typvariablen machen, die bei der reinen Erasure zuvor nicht notwendig waren.
+Dafür mussten Metadaten im Bytecode-Format hinzugefügt werden, die Angaben über verwendete Typparameter machen, die bei der reinen Erasure zuvor nicht notwendig waren.
 Ein wichtiges Ziel war es, die Spezialisierung zur Laufzeit so einfach wie möglich zu halten und zusätzliche Verifikation oder komplexe Übersetzungsverfahren zu vermeiden.
 Das sollte die Implementierung vereinfachen und Ladezeiten gering halten, setzte aber bedachte Änderung des Bytecode-Formats voraus.
 
 % any
-Zum aktuellen Zeitpunkt ist noch keine Syntax für generischen Typen mit Unterstützung von Primitiven definiert.
+Zum aktuellen Zeitpunkt ist noch keine Syntax für generischen Typen mit Unterstützung von Primitiven festgelegt.
 Es ist naheliegend, dass aus Kompatibilitätsgründen die bestehende Syntax für Typparameter die Semantik der Erasure beibehalten wird und Spezialisierung explizit aktiviert werden muss.
-Dafür wurde bisher das Schlüsselwort \code{any} verwendet: \code{class Box<any T>}.
+Dafür wurde in der Literatur zu Valhalla vorläufig das Schlüsselwort \code{any} verwendet: \code{class Box<any T>}.
 
 % Layers
 Eine weitere vorgeschlagene syntaktische Neuerung sind die \emph{Layers}, welche es ermöglichen, in bestimmten Spezialisierungen neue Methoden hinzuzufügen.
 Sie sind aus dem Problem entstanden, dass die meisten bestehenden generischen Klassen unter der Annahme implementiert wurden, dass sie nur mit Referenztypen verwendet werden.
-So kann beispielsweise die \code{V get(K key)}-Methode der Klasse \code{Map<K, V>} \code{null} zurückgeben, wenn der Schlüssel nicht vorhanden ist.
+So kann beispielsweise die Methode \code{V get(K key)} der Klasse \code{Map<K, V>} \code{null} zurückgeben, wenn der Schlüssel nicht vorhanden ist.
 Dies ist jedoch nicht möglich, wenn \code{V=int} ist.
 Mithilfe von Layers kann nun festgelegt werden, dass es die \code{get}-Methode nur dann geben soll, wenn \code{V} ein Referenztyp ist.
 Andernfalls könnte eine neue Methode \code{getOrDefault} hinzugefügt werden.
