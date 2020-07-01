@@ -41,8 +41,7 @@ Value Types sollen dies vermeiden.
 \subsubsection{Unterschiede zu Referenztypen}
 
 Es soll nun betrachtet werden, was Value Types von regulären Referenztypen unterscheided.
-Größter Unterschied ist die \emph{Pointerfreiheit}.
-Ohne Pointer funktionieren einige Konzepte nicht mehr, die bisher alltäglich waren.
+Größter Unterschied ist, dass nun keine Pointer mehr verwendet werden, ohne die sich einige grundlegende Konzepte ändern.
 So besitzen Werte keine Identität mehr, die verglichen werden könnte, und damit auch keinen Identitäts-Hashcode.
 Weiterhin können sie nicht mehr als Monitor dienen, da ohnehin nicht von zwei Threads darauf zugegriffen werden kann.
 Die \code{clone}-Operation ist nicht mehr sinnvoll, ebenso der Finalizer, da die Werte nicht mehr vom Garbage Collector verarbeitet werden.
