@@ -31,7 +31,7 @@ In Java sind hingegen alle Variablen und Parameter vom Typ einer Klasse implizit
 Dies vereinfacht das Programmiermodell und ist weniger fehleranfällig, besonders durch den Garbage Collector.
 Es führt jedoch auch dazu, dass alle Zugriffe auf Daten in diesen Objekten über Indirektion erfolgen.
 Dies verringert die Lokalität der Daten und resultiert auf heutiger Hardware in deutlich langsamerer Performance.
-Weiterhin erzeugen Referenzen einen deutlichen höheren Speicherverbrauch, wie ein Beispiel unter~\ref{subsubsec:memory-example} zeigen wird.
+Weiterhin erzeugen Referenzen einen deutlichen höheren Speicherverbrauch, wie ein Beispiel in Abschnitt~\ref{subsubsec:memory-example} zeigen wird.
 Zuletzt sorgt die Allokation und Freigabe des Speichers, besonders bei einer Vielzahl kleiner Objekte, für einen Verwaltungsaufwand seitens des Allocators und Garbage Collectors.
 
 Aufgrund dieser Performance-\ und Speicherbedenken suchen viele Java-Entwickler nach Möglichkeiten, Klassen und Objekte zu umgehen.
@@ -44,7 +44,7 @@ Es soll nun betrachtet werden, was Value Types von regulären Referenztypen unte
 Größter Unterschied ist, dass nun keine Pointer mehr verwendet werden, ohne die sich einige grundlegende Konzepte ändern.
 So besitzen Werte keine Identität mehr, die verglichen werden könnte, und damit auch keinen Identitäts-Hashcode.
 Die Veränderung von Feldern von Werten ist entweder nicht erlaubt oder wirkt sich nur auf lokale Instanzen in Variablen und Parametern aus, da Value Types wie primitive Werte bei jeder Zuweisung kopiert werden.
-Durch die Kopier-Semantik können Werte nicht mehr als Monitor für die Synchronisierung dienen und auch die \code{clone}-Operation nicht mehr sinnvoll.
+Durch die Kopier-Semantik können Werte nicht mehr als Monitor für die Synchronisierung dienen und auch die \code{clone}-Operation ist nicht mehr sinnvoll.
 Ebenso ist der Finalizer nun überflüssig, da die Werte nicht mehr vom Garbage Collector verarbeitet werden.
 Auch \code{null} ist kein gültiger Wert mehr, allerdings wäre eine Alternative möglich, die den Speicher für den Wert auf null setzt.
 Zuletzt kann nicht von Value Types geerbt werden, da im Voraus bekannt sein muss, wie viel Speicherplatz reserviert werden muss, was mit Vererbung nicht statisch entschieden werden kann.
@@ -133,8 +133,8 @@ Bei einer Pfadlänge von drei berechnet sich der Speicherverbrauch wie folgt:
     \SI{24}{\byte} + 3 \cdot \SI{8}{\byte} + 3 \cdot (\SI{16}{\byte} + 2 \cdot \SI{4}{\byte}) = \SI{120}{\byte}\label{eq:memory-usage-current}
 \end{equation}
 
-Ein Objekt, das zwei \code{int}-Werte beeinhaltet, benötigt auf einer 64-bit \ac{jvm} $\SI{8}{\byte}$ für die Referenz selber, $\SI{16}{\byte}$\footnote{Mit dem \ac{jvm}-Flag \code{-XX:+UseCompressedOops} könnte dies auf $\SI{12}{\byte}$ reduziert werden, allerdings kommen dann $\SI{4}{\byte}$ Padding hinzu, da die Größe von Objekten im Heap ein Vielfaches von $\SI{8}{\byte}$ sein muss~\cite{compressed-oops}.} für den Objekt-Header und je $\SI{4}{\byte}$ für die beiden \code{int}-Werte~\cite{compressed-oops}.
 Die Größe eines Array-Headers beträgt $\SI{24}{\byte}$~\cite{compressed-oops}.
+Ein Objekt, das zwei \code{int}-Werte beeinhaltet, benötigt auf einer 64-bit \ac{jvm} $\SI{8}{\byte}$ für die Referenz selber, $\SI{16}{\byte}$\footnote{Mit dem \ac{jvm}-Flag \code{-XX:+UseCompressedOops} könnte dies auf $\SI{12}{\byte}$ reduziert werden, allerdings kommen dann $\SI{4}{\byte}$ Padding hinzu, da die Größe von Objekten im Heap ein Vielfaches von $\SI{8}{\byte}$ sein muss~\cite{compressed-oops}.} für den Objekt-Header und je $\SI{4}{\byte}$ für die beiden \code{int}-Werte~\cite{compressed-oops}.
 Mit drei Objekten ergibt sich also insgesamt ein Speicherverbrauch von $\SI{120}{\byte}$.
 
 Das gleiche Beispiel soll nun mit Value Types realisiert werden.
@@ -157,7 +157,7 @@ Die Höhe der Rechtecke mit Zahlen entspricht hier $\SI{4}{\byte}$.
     \centering
     \includegraphics[width=\textwidth]{img/memory-usage.pdf}
     \vspace{-3ex}
-    \caption{Vergleich des Speicherlayouts eines Arrays von Punkten heute und mit Value Types}
+    \caption{Vergleich des Speicherlayouts eines Arrays von Punkten heute (links) und mit Value Types (rechts)}
     \label{fig:memory-usage}
 \end{figure}
 
