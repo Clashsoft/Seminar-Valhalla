@@ -66,7 +66,8 @@ Beides ist jedoch bei derzeitigen Beispielen für Value-basierte Klassen wie \co
 \subsubsection{Inline-Klassen}
 
 Mit dem Projekt Valhalla soll die Konvention der Value-basierten Klassen nun Sprach- und \ac{jvm}-Unterstützung erhalten.
-Diese trägt die Bezeichnung \emph{Inline-Klassen}~\cite{object-model}, die sich aus dem Schlüsselwort \code{inline} ableitet, das für die Deklaration von Value Types eingesetzt wird.
+Diese trägt die Bezeichnung \emph{Inline-Klassen}~\cite{object-model}, die sich aus dem Schlüsselwort \code{inline} ableitet, das für deren Deklaration eingesetzt wird.
+Inline-Klassen sollen als vollwertige Implementierung der Value Types dienen.
 Listing~\ref{inline-class-example} zeigt, wie eine Inline-Klasse aussehen kann.
 Dabei ist zu beachten, dass sich der Code nur durch das Schlüsselwort \code{inline} von einer regulären Klasse unterscheidet.
 Nach dem Motto ``Codes like a class, works like an int''~\cite{object-model} sollen die syntaktischen Änderungen bewusst klein sein.
@@ -95,6 +96,7 @@ die primitiven Typen werden den Inline-Typen untergeordnet.
 Weiterhin kann nun für alle Typen ein Default-Wert definiert werden, der mit \code{T.default} bezeichnet wird.
 Für primitive Typen bleibt dieser \code{0} oder \code{false}, während Referenztypen \code{null} beibehalten.
 Inline-Typen definieren ihren Default-Wert als eine Instanz, bei der alle Felder mit dem jeweiligen Default-Wert belegt sind.
+Im Bezug auf das obige Beispiel ist der Wert \code{Point.default} folglich äquivalent zu \code{new Point(0, 0)}.
 
 % Marker interfaces
 Unter Umständen kann es nützlich sein, zur Laufzeit zu ermitteln, ob es sich bei einem Wert um eine Referenz oder einen Inline-Wert handelt.
