@@ -151,7 +151,6 @@ Zu beachten ist auch, dass die gesamten Daten des Arrays mit einer Größe von $
 
 In Abbildung~\ref{fig:memory-usage} erfolgt eine grafische Darstellung des verringerten Speicherverbrauchs.
 Sie zeigt links das Speicherlayout in heutigen \acp{jvm} und rechts das Speicherlayout, wenn Value Types für die Punkte verwendet werden.
-Die Höhe der Rechtecke mit Zahlen entspricht hier $\SI{4}{\Byte}$.
 
 \begin{figure}
     \centering
@@ -161,8 +160,7 @@ Die Höhe der Rechtecke mit Zahlen entspricht hier $\SI{4}{\Byte}$.
     \label{fig:memory-usage}
 \end{figure}
 
-Die zweidimensionalen Punkte als Teil eines Pfades sind nur ein kleines, anwendungsspezifisches Beispiel.
-Grundsätzlich lassen sich jedoch mit Value Types eine Vielzahl von neuen Datentypen definieren, die breite Anwendung finden können.
+Neben Punkten lassen sich mit Value Types eine Vielzahl von neuen Datentypen definieren, die breite Anwendung finden können.
 Dazu gehören im Bereich der numerischen Datenverarbeitung komplexe, vorzeichenlose und Dezimalzahlen, Binärzahlen größer als 64 bit und Vektoren, die auf modernen \acp{cpu} effizient verarbeitet werden können.
 Auch algebraische Datentypen wie \code{Optional}, \code{Either}, \code{Unit} und Tupel sind wichtige Einsatzmöglichkeiten.
 Letztere benötigen jedoch besondere Sprachunterstützung, die noch nicht Teil des Projekts ist.
