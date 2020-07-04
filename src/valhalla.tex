@@ -51,15 +51,14 @@ Zuletzt kann nicht von Value Types geerbt werden, da im Voraus bekannt sein muss
 
 \subsubsection{Value-basierte Klassen}
 
-Seit Java 8 definiert die Sprache bereits ein Konzept, das den Value Types ähnelt: die Value-basierten Klassen~\cite{value-based-classes}.
+Seit Java 8 gibt es bereits ein Konzept, das den Value Types ähnelt: die Value-basierten Klassen~\cite{value-based-classes}.
 Dabei handelt es sich um eine Konvention, die von einigen Klassen der Standardbibliothek eingehalten wird und auch für Bibliotheksautoren und andere Endbenutzer der Sprache verfügbar ist.
-Wesentlich bei Value-basierten Klassen ist der Einsatz von Feldern, die \code{final} sind, wodurch Instanzen dieser Klassen unveränderbar sind.
+Value-basierte Klassen setzen voraus, dass alle Felder \code{final} sind, wodurch Instanzen dieser Klassen unveränderbar sind.
 Weiterhin dürfen diese Klassen keinen öffentlich zugänglichen Konstruktor besitzen, sondern müssen stets über eine Factory-Methode instanziiert werden.
-Dadurch müssen keine Garantien über die Identität erstellter Objekte gemacht werden.
-Die Factory-Methode kann beispielsweise ihre Rückgabewerte in einem Cache speichern.
-Aufgrund der fehlenden Identität ist es nicht sinnvoll, Identitätsvergleiche mit \code{==} durchzuführen.
+Anders als ein Konstruktor, der beim Aufruf immer eine neue Instanz erstellt, darf eine Factory-Methode auch das selbe Objekte mehrfach zurückgeben, beispielsweise wenn sie ein Cache verwaltet.
+Da der Benutzer einer Value-basierten Klasse keine Kontrolle über die Identität der Instanzen hat, ist es nicht sinnvoll, Identitätsvergleiche mit \code{==} durchzuführen.
 Folglich müssen stets \code{equals} und \code{hashCode} implementiert werden.
-Identitäts-basierte Operationen und Synchronisierung auf Value-basierten Klassen sind zwar derzeit nicht verboten, da es sich um eine Konvention handelt, können aber zu unerwarteten Ergebnissen führen.
+Identitäts-basierte Operationen und Synchronisierung auf Value-basierten Klassen sind zwar nicht verboten, da es sich um eine Konvention handelt, können aber zu unerwarteten Ergebnissen führen.
 Somit erfüllen Value-basierte Klassen fast alle zuvor genannten Punkte, durch die sich Value Types von Referenztypen unterscheiden.
 Ausnahmen sind \code{null} als möglicher Wert sowie die erlaubte Vererbung.
 Beides ist jedoch bei derzeitigen Beispielen für Value-basierte Klassen wie \code{Integer} und \code{Optional} ohnehin nicht üblich.
