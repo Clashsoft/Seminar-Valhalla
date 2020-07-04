@@ -10,7 +10,7 @@ Das OpenJDK-Projekt \emph{Valhalla}~\cite{openjdk-valhalla} besteht aus drei wes
 \end{itemize}
 
 Grundlage für die Änderungen des Projekts stellen die \emph{Value Objects} dar.
-Deren Ziel ist es, die \ac{jvm} mit Unterstützung für neue benutzerdefinierbare Typen zu erweitern, den \emph{Value Types}.
+Deren Ziel ist es, die \ac{jvm} um Unterstützung für neue benutzerdefinierbare Typen zu erweitern, die \emph{Value Types}.
 Diese haben im Vergleich zu bestehenden Klassen keine Referenzsemantik, sondern verhalten sich wie primitive Datentypen.
 \ac{jep} 169 selber beschäftigt sich nur mit einer kleinen Erweiterung der \ac{jvm} in diese Richtung.
 Unterabschnitt~\ref{subsec:value-types} betrachtet die Value Types als Gesamtkonzept.
@@ -18,13 +18,13 @@ Unterabschnitt~\ref{subsec:value-types} betrachtet die Value Types als Gesamtkon
 Die \emph{Variable Handles} bezeichnen einen Teil der Java-Standardbibliothek, die präziseren Zugriff auf Felder von Objekten und Array-Elementen ermöglichen.
 Die Implementierung der \ac{api} erfolgte bereits in Java 9 und wird daher nicht näher in dieser Arbeit betrachtet.
 
-Die Erweiterung von generischen Typen mit Unterstützung für primitive Typen ist der größte Teil des Projekts.
+Die Erweiterung von generischen Typen um Unterstützung für primitive Typen ist der größte Teil des Projekts.
 Sie verlangt weitreichende Änderungen, die sowohl die Sprache als auch die \ac{jvm} betreffen.
 In Unterabschnitt~\ref{subsec:primitive-generics} erfolgt eine Vertiefung in dieses Thema.
 
 \subsection{Value Types}\label{subsec:value-types}
 
-Seit der ersten Version von Java wird der Ansatz verfolgt, dass alles außer primitive Werte ein Objekt ist.
+Seit der ersten Version von Java wird der Ansatz verfolgt, dass alles außer primitiven Werten ein Objekt ist.
 Das unterscheided Java von Programmiersprachen wie C oder C++, wo primitive Werte sowie Klassen und Structs zunächst nur einfache Werte sind und erst durch Pointer eine Referenzsemantik erhalten.
 
 In Java sind hingegen alle Variablen und Parameter vom Typ einer Klasse implizit Pointer, die automatisch von der \ac{jvm} verwaltet werden.
@@ -43,7 +43,7 @@ Value Types sollen dies vermeiden.
 Es soll nun betrachtet werden, was Value Types von regulären Referenztypen unterscheided.
 Größter Unterschied ist, dass nun keine Pointer mehr verwendet werden, ohne die sich einige grundlegende Konzepte ändern.
 So besitzen Werte keine Identität mehr, die verglichen werden könnte, und damit auch keinen Identitäts-Hashcode.
-Die Veränderung von Feldern von Werten ist entweder nicht erlaubt oder wirkt sich nur auf lokale Instanzen in Variablen und Parametern aus, da Value Types wie primitive Werte bei jeder Zuweisung kopiert werden.
+Die Veränderung der Felder von Werten ist entweder nicht erlaubt oder wirkt sich nur auf lokale Instanzen in Variablen und Parametern aus, da Value Types wie primitive Werte bei jeder Zuweisung kopiert werden.
 Durch die Kopier-Semantik können Werte nicht mehr als Monitor für die Synchronisierung dienen und auch die \code{clone}-Operation ist nicht mehr sinnvoll.
 Ebenso ist der Finalizer nun überflüssig, da die Werte nicht mehr vom Garbage Collector verarbeitet werden.
 Auch \code{null} ist kein gültiger Wert mehr, allerdings wäre eine Alternative möglich, die den Speicher für den Wert auf null setzt.
@@ -66,7 +66,7 @@ Beides ist jedoch bei derzeitigen Beispielen für Value-basierte Klassen wie \co
 
 \subsubsection{Inline-Klassen}
 
-Mit Projekt Valhalla soll die Konvention der Value-basierten Klassen nun Sprach- und \ac{jvm}-Unterstützung erhalten.
+Mit dem Projekt Valhalla soll die Konvention der Value-basierten Klassen nun Sprach- und \ac{jvm}-Unterstützung erhalten.
 Diese trägt die Bezeichnung \emph{Inline-Klassen}~\cite{object-model}, die sich aus dem Schlüsselwort \code{inline} ableitet, das für die Deklaration von Value Types eingesetzt wird.
 Listing~\ref{inline-class-example} zeigt, wie eine Inline-Klasse aussehen kann.
 Dabei ist zu beachten, dass sich der Code nur durch das Schlüsselwort \code{inline} von einer regulären Klasse unterscheidet.
@@ -218,13 +218,13 @@ Händische Spezialisierungen können zwar für verbesserte Performance sorgen, b
 % Einfluss von Value Types
 In bisherigen Java-Versionen ist das Problem nur auf die acht primitiven Typen beschränkt.
 Werden diese acht auf die drei häufigsten -- \code{int}, \code{long} und \code{double} -- reduziert, kann die Anzahl der händischen Spezialisierungen eingeschränkt werden.
-Dies ist jedoch nicht mehr möglich, wenn mit Value Types eine unendliche Zahl neuer Typen hinzukomment, die sich ähnlich wie primitive verhalten sollen.
+Dies ist jedoch nicht mehr möglich, wenn mit Value Types eine unendliche Zahl neuer Typen hinzukommen, die sich ähnlich wie primitive verhalten sollen.
 Es wäre nicht sinnvoll, den Speicherverbrauch von Arrays zu verringern, wenn das nicht auch mit Listen möglich ist, da diese in den meisten Fällen die bessere Wahl sind.
 Folglich ist es naheliegend, dass die Änderung von generischen Typen zusammen mit den neuen Value Types eingeführt wird.
 
 \subsubsection{Spezialisierung durch den Compiler}
 
-Ein Ansatz, der das Wartungsproblem der händische Spezialisierung vermeidet, ist Spezialisierung durch den Compiler.
+Ein Ansatz, der das Wartungsproblem der händischen Spezialisierung vermeidet, ist Spezialisierung durch den Compiler.
 Dabei erzeugt der Compiler aus einer Quellcode-Datei mehrere Bytecode-Dateien für eine vorgegebene Menge von Typen.
 Dies kommt beispielsweise in der \ac{jvm}-Sprache \emph{Scala} zum Einsatz, in der Spezialisierungen mit einer Annotation an einem Typparameter festgelegt werden können~\cite{scala-specialized}.
 Das verringert zwar den Programmieraufwand, sorgt aber dennoch für größere Artefakte aufgrund des duplizierten Bytecodes.
