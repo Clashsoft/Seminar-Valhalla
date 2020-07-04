@@ -125,7 +125,7 @@ Diese Formen sollen mit den bestehenden Namen für primitive und Wrapper-Typen k
 
 \subsubsection{Beispiel zum Speicherverbrauch}\label{subsubsec:memory-example}
 
-Um das Speicherproblem näher zu erläutern, soll nun ein Beispiel betrachtet werden.
+Es soll nun ein Beispiel betrachtet werden, um das Speicherproblem näher zu erläutern, das Value Types lösen sollen.
 Es sollen einige ganzzahlige Punkte im zweidimensionalen Raum gespeichert werden, die einen Pfad bilden.
 Die Punkte sind als Objekte mit zwei \code{int}-Feldern modelliert, der Pfad als Array von Punkten.
 Bei einer Pfadlänge von drei berechnet sich der Speicherverbrauch wie folgt:
@@ -153,7 +153,7 @@ Zu beachten ist auch, dass die gesamten Daten des Arrays mit einer Größe von $
 In Abbildung~\ref{fig:memory-usage} erfolgt eine grafische Darstellung des verringerten Speicherverbrauchs.
 Sie zeigt links das Speicherlayout in heutigen \acp{jvm} und rechts das Speicherlayout, wenn Value Types für die Punkte verwendet werden.
 
-\begin{figure}
+\begin{figure}[htp]
     \centering
     \includegraphics[width=\textwidth]{img/memory-usage.pdf}
     \vspace{-3ex}
