@@ -179,12 +179,6 @@ Dadurch können typsichere Datenstrukturen definiert werden.
 Die Implementierung von generischen Typen erfolgte durch die sogenannte \emph{Erasure}.
 Beim Generieren von Bytecode ersetzt der Java-Compiler sämtliche Vorkommen von generischen Typparametern durch \code{Object}\footnote{Falls durch die Form \code{<T extends Bound>} ein Bound angegeben wird, wird der Typparameter durch diesen statt \code{Object} ersetzt.}.
 Generische Typen konnten so implementiert werden, ohne Änderungen an der \ac{jvm} vornehmen zu müssen.
-Erasure steht im Kontrast zur Spezialisierung, bei der Typparameter wie bei einer Vorlage durch die konkreten Typen ersetzt werden, als wären sie direkt in der Klasse oder Methode verwendet worden.
-Dieser Ansatz wird beispielsweise von C++ benutzt.
-Er hat den Vorteil, dass typspezifische Optimierungen durchgeführt werden können und Spezialisierungen eigene Methoden und sonstige Funktionalität bereitstellen können.
-Nachteil ist jedoch die Duplizierung von Code, wodurch Binärdateien größer werden.
-Zudem sind sogenannte \emph{Wildcard-Typen} mit vollständiger Spezialisierung nicht möglich.
-Ein Wildcard-Typ wie \code{List<?>} bildet in Java einen gemeinsamen Supertyp von allen Typen \code{List<T>} mit beliebigem Typ \code{T}.
 
 % Migration mit Erasure
 Erasure ermöglichte ferner den Entwicklern, schrittweise auf generische Typen umsteigen.
@@ -223,8 +217,9 @@ Folglich ist es naheliegend, dass die Änderung von generischen Typen zusammen m
 \subsubsection{Spezialisierung durch den Compiler}
 
 Ein Ansatz, der das Wartungsproblem der händischen Spezialisierung vermeidet, ist Spezialisierung durch den Compiler.
-Dabei erzeugt der Compiler aus einer Quellcode-Datei mehrere Bytecode-Dateien für eine vorgegebene Menge von Typen.
-Dies kommt beispielsweise in der \ac{jvm}-Sprache \emph{Scala} zum Einsatz, in der Spezialisierungen mit einer Annotation an einem Typparameter festgelegt werden können~\cite{scala-specialized}.
+Diese Technik kommt beispielsweise in C++ zum Einsatz, wo der Compiler Typparameter wie bei einer Vorlage durch die konkreten Typen ersetzt, als wären sie direkt in der Klasse oder Methode verwendet worden.
+Das hat den Vorteil, dass typspezifische Optimierungen durchgeführt werden können und Spezialisierungen eigene Methoden und sonstige Funktionalität bereitstellen können.
+In ähnlicher Form wird der Ansatz auch von der \ac{jvm}-Sprache \emph{Scala} verwendet, in der Spezialisierungen mit einer Annotation an einem Typparameter festgelegt werden können~\cite{scala-specialized}.
 Das verringert zwar den Programmieraufwand, sorgt aber dennoch für größere Artefakte aufgrund des duplizierten Bytecodes.
 Zudem sind die entstehenden Klassen aus Sicht der \ac{jvm} und anderen Java-ähnlichen Sprachen nicht verwandt, wodurch spezielle Interfaces verwendet werden müssen, wenn beispielsweise ein Wildcard-Typ gebraucht wird.
 Weiterhin wird Reflection erschwert, was in Scala durch eine eigene Reflection-Bibliothek umgangen wird.
