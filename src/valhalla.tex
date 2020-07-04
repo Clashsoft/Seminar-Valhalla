@@ -184,7 +184,7 @@ Dieser Ansatz wird beispielsweise von C++ benutzt.
 Er hat den Vorteil, dass typspezifische Optimierungen durchgeführt werden können und Spezialisierungen eigene Methoden und sonstige Funktionalität bereitstellen können.
 Nachteil ist jedoch die Duplizierung von Code, wodurch Binärdateien größer werden.
 Zudem sind sogenannte \emph{Wildcard-Typen} mit vollständiger Spezialisierung nicht möglich.
-Ein Wildcard-Typ wie \code{List<?>} bildet in Java einen gemeinsamen Supertyp von \code{List<Integer>} und \code{List<String>}.
+Ein Wildcard-Typ wie \code{List<?>} bildet in Java einen gemeinsamen Supertyp von allen Typen \code{List<T>} mit beliebigem Typ \code{T}.
 
 % Migration mit Erasure
 Erasure ermöglichte ferner den Entwicklern, schrittweise auf generische Typen umsteigen.
@@ -207,7 +207,7 @@ Der erhöhte Speicherverbrauch, der bereits im vorherigen Unterabschnitt~\ref{su
 
 Aufgrund von Bedenken zu Performance und Speicherverbrauch sind in Java-Bibliotheken häufig händische Spezialisierungen vertreten.
 Beispiele dafür sind selbst in der Standardbibliothek zu finden.
-So gibt es die Klassen \code{OptionalInt} und \code{IntStream} sowie Äquivalente für \code{long} und \code{double}, die als Ersatz für die in Java 8 eingeführten Klassen \code{Optional<T>} und \code{Stream<T>} dienen und untereinander nicht kompatibel sind~\cite{java-8-docs}.
+So gibt es seit Java 8 die Klassen \code{OptionalInt} und \code{IntStream} sowie Äquivalente für \code{long} und \code{double}, die als performanter und speichersparender Ersatz für \code{Optional<T>} und \code{Stream<T>} dienen und untereinander nicht kompatibel sind~\cite{java-8-docs}.
 Das Problem wird verstärkt, wenn die zu spezialisierende Klasse mehr als einen Typparameter hat.
 Im Package \code{java.util.function} ist eine Reihe von Spezialisierungen für Interfaces vorhanden, die je eine Methode mit null, einem oder zwei Parametern bereitstellen, deren Typen generisch sind.
 Mehrere Klassen variieren ebenfalls im Rückgabetyp der Methode.
