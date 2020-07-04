@@ -130,28 +130,28 @@ Die Punkte sind als Objekte mit zwei \code{int}-Feldern modelliert, der Pfad als
 Bei einer Pfadlänge von drei berechnet sich der Speicherverbrauch wie folgt:
 
 \begin{equation}
-    \SI{24}{\byte} + 3 \cdot \SI{8}{\byte} + 3 \cdot (\SI{16}{\byte} + 2 \cdot \SI{4}{\byte}) = \SI{120}{\byte}\label{eq:memory-usage-current}
+    \SI{24}{\Byte} + 3 \cdot \SI{8}{\Byte} + 3 \cdot (\SI{16}{\Byte} + 2 \cdot \SI{4}{\Byte}) = \SI{120}{\Byte}\label{eq:memory-usage-current}
 \end{equation}
 
-Die Größe eines Array-Headers beträgt $\SI{24}{\byte}$~\cite{compressed-oops}.
-Ein Objekt, das zwei \code{int}-Werte beeinhaltet, benötigt auf einer 64-bit \ac{jvm} $\SI{8}{\byte}$ für die Referenz selber, $\SI{16}{\byte}$\footnote{Mit dem \ac{jvm}-Flag \code{-XX:+UseCompressedOops} könnte dies auf $\SI{12}{\byte}$ reduziert werden, allerdings kommen dann $\SI{4}{\byte}$ Padding hinzu, da die Größe von Objekten im Heap ein Vielfaches von $\SI{8}{\byte}$ sein muss~\cite{compressed-oops}.} für den Objekt-Header und je $\SI{4}{\byte}$ für die beiden \code{int}-Werte~\cite{compressed-oops}.
-Mit drei Objekten ergibt sich also insgesamt ein Speicherverbrauch von $\SI{120}{\byte}$.
+Die Größe eines Array-Headers beträgt $\SI{24}{\Byte}$~\cite{compressed-oops}.
+Ein Objekt, das zwei \code{int}-Werte beeinhaltet, benötigt auf einer 64-bit \ac{jvm} $\SI{8}{\Byte}$ für die Referenz selber, $\SI{16}{\Byte}$\footnote{Mit dem \ac{jvm}-Flag \code{-XX:+UseCompressedOops} könnte dies auf $\SI{12}{\Byte}$ reduziert werden, allerdings kommen dann $\SI{4}{\Byte}$ Padding hinzu, da die Größe von Objekten im Heap ein Vielfaches von $\SI{8}{\Byte}$ sein muss~\cite{compressed-oops}.} für den Objekt-Header und je $\SI{4}{\Byte}$ für die beiden \code{int}-Werte~\cite{compressed-oops}.
+Mit drei Objekten ergibt sich also insgesamt ein Speicherverbrauch von $\SI{120}{\Byte}$.
 
 Das gleiche Beispiel soll nun mit Value Types realisiert werden.
 Dabei entfallen die Objekt-Header und Referenzen vollständig.
 Der neue Speicherverbrauch berechnet sich also wie folgt:
 
 \begin{equation}
-    \SI{24}{\byte} + 3 \cdot 2 \cdot \SI{4}{\byte} = \SI{48}{\byte}\label{eq:memory-usage-inline}
+    \SI{24}{\Byte} + 3 \cdot 2 \cdot \SI{4}{\Byte} = \SI{48}{\Byte}\label{eq:memory-usage-inline}
 \end{equation}
 
-Folglich konnten $\SI{72}{\byte}$ eingespart werden.
+Folglich konnten $\SI{72}{\Byte}$ eingespart werden.
 Der Effekt wird verstärkt, wenn das Array mehr Elemente enthält.
-Zu beachten ist auch, dass die gesamten Daten des Arrays mit einer Größe von $\SI{48}{\byte}$ in eine Cache-Zeile passen, wenn bei deren Größe von $\SI{64}{\byte}$ ausgangen wird.
+Zu beachten ist auch, dass die gesamten Daten des Arrays mit einer Größe von $\SI{48}{\Byte}$ in eine Cache-Zeile passen, wenn bei deren Größe von $\SI{64}{\Byte}$ ausgangen wird.
 
 In Abbildung~\ref{fig:memory-usage} erfolgt eine grafische Darstellung des verringerten Speicherverbrauchs.
 Sie zeigt links das Speicherlayout in heutigen \acp{jvm} und rechts das Speicherlayout, wenn Value Types für die Punkte verwendet werden.
-Die Höhe der Rechtecke mit Zahlen entspricht hier $\SI{4}{\byte}$.
+Die Höhe der Rechtecke mit Zahlen entspricht hier $\SI{4}{\Byte}$.
 
 \begin{figure}
     \centering
