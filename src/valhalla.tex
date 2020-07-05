@@ -24,19 +24,7 @@ In Unterabschnitt~\ref{subsec:primitive-generics} erfolgt eine Vertiefung in die
 
 \subsection{Value Types}\label{subsec:value-types}
 
-Seit der ersten Version von Java wird der Ansatz verfolgt, dass alles außer primitiven Werten ein Objekt ist.
-Das unterscheided Java von Programmiersprachen wie C oder C++, wo primitive Werte sowie Klassen und Structs zunächst nur einfache Werte sind und erst durch Pointer eine Referenzsemantik erhalten.
-
-In Java sind hingegen alle Variablen und Parameter vom Typ einer Klasse implizit Pointer, die automatisch von der \ac{jvm} verwaltet werden.
-Dies vereinfacht das Programmiermodell und ist weniger fehleranfällig, besonders durch den Garbage Collector.
-Es führt jedoch auch dazu, dass alle Zugriffe auf Daten in diesen Objekten über Indirektion erfolgen.
-Dies verringert die Lokalität der Daten und resultiert auf heutiger Hardware in deutlich langsamerer Performance.
-Weiterhin erzeugen Referenzen einen deutlichen höheren Speicherverbrauch, wie ein Beispiel in Abschnitt~\ref{subsubsec:memory-example} zeigen wird.
-Zuletzt sorgt die Allokation und Freigabe des Speichers, besonders bei einer Vielzahl kleiner Objekte, für einen Verwaltungsaufwand seitens des Allocators und Garbage Collectors.
-
-Aufgrund dieser Performance-\ und Speicherbedenken suchen viele Java-Entwickler nach Möglichkeiten, Klassen und Objekte zu umgehen.
-Meist entsteht dabei Code, der händische Optimierungen auf Kosten von Lesbarkeit, Abstraktion und Fehlersicherheit enthält.
-Value Types sollen dies vermeiden.
+% TODO
 
 \subsubsection{Unterschiede zu Referenztypen}
 
