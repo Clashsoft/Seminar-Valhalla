@@ -32,21 +32,9 @@ In Abschnitt~\ref{subsec:primitive-generics} erfolgt eine Vertiefung in dieses T
 \emph{Value Types} bezeichnen ein Sprachfeature, das benutzerdefinierte Typen erlauben soll, die keine Referenzsemantik besitzen.
 Das bedeutet, dass Instanzen dieser Typen als reine Werte repräsentiert werden und keine Referenzen verwendet werden.
 Wie bereits am Ende von Abschnitt~\ref{sec:memory-model} beschrieben, sollen diese aus Sicht des Programmierers wie Klassen funktionieren, sich aber wie primitive Datentypen verhalten.
-In diesem Abschnitt soll zunächst betrachtet werden, wie sich Value Types von Referenztypen unterscheiden.
-Daraufhin wird ein Vorgänger der Value Types vorgestellt, die \emph{Value-basierten Klassen}.
+In diesem Abschnitt wird zunächst ein Vorgänger der Value Types vorgestellt, die \emph{Value-basierten Klassen}.
 Diese bilden die Grundlage für die eigentliche Implementierung der Value Types, die \emph{Inline-Klassen}.
 Sie repräsentieren den jüngsten einer Reihe von Prototypen, die während des Projekts entwickelt worden.
-
-\subsubsection{Unterschiede zu Referenztypen}
-
-Es soll nun betrachtet werden, was Value Types von regulären Referenztypen unterscheided.
-Größter Unterschied ist, dass nun keine Pointer mehr verwendet werden, ohne die sich einige grundlegende Konzepte ändern.
-So besitzen Werte keine Identität mehr, die verglichen werden könnte, und damit auch keinen Identitäts-Hashcode.
-Die Veränderung der Felder von Werten ist entweder nicht erlaubt oder wirkt sich nur auf lokale Instanzen in Variablen und Parametern aus, da Value Types wie primitive Werte bei jeder Zuweisung kopiert werden.
-Durch die Kopier-Semantik können Werte nicht mehr als Monitor für die Synchronisierung dienen und auch die \code{clone}-Operation ist nicht mehr sinnvoll.
-Ebenso ist der Finalizer nun überflüssig, da die Werte nicht mehr vom Garbage Collector verarbeitet werden.
-Auch \code{null} ist kein gültiger Wert mehr, allerdings wäre eine Alternative möglich, die den Speicher für den Wert auf null setzt.
-Zuletzt kann nicht von Value Types geerbt werden, da im Voraus bekannt sein muss, wie viel Speicherplatz reserviert werden muss, was mit Vererbung nicht statisch entschieden werden kann.
 
 \subsubsection{Value-basierte Klassen}
 
