@@ -64,7 +64,11 @@ Es fällt auf, dass ohne die zusätzlichen Objekte nicht dur die doppelte Indire
 Dadurch ergibt sich ein deutliche kleinerer Speicherverbrauch:
 
 \begin{equation}
-    \SI{24}{\Byte} + 3 \cdot 2 \cdot \SI{4}{\Byte} = \SI{48}{\Byte}\label{eq:memory-usage-flat}
+    \begin{split}
+        \textit{Speicherverbrauch} & = \textit{Array-Header} + 6 * \textit{int} \\
+        & = \SI{24}{\Byte} + 6 \cdot \SI{4}{\Byte} \\
+        & = \SI{48}{\Byte}\label{eq:memory-usage-flat}
+    \end{split}
 \end{equation}
 
 Folglich konnten $\SI{72}{\Byte}$ eingespart werden.
