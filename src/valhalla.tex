@@ -20,7 +20,10 @@ Die \emph{Variable Handles} bezeichnen einen Teil der Java-Standardbibliothek, d
 Die Implementierung der \ac{api} erfolgte bereits in Java 9 und wird daher nicht näher in dieser Arbeit betrachtet.
 
 Die Erweiterung von generischen Typen um Unterstützung für primitive Typen ist der größte Teil des Projekts.
-Sie verlangt weitreichende Änderungen, die sowohl die Sprache als auch die \ac{jvm} betreffen.
+Es handelt sich dabei um einen Kritikpunkt, der schon bei der Einführung von generischen Typen enstanden ist.
+Dieses Feature ist zudem erforderlich, damit die mit Value Types geplanten Verbesserungen auch in generischen Datenstrukturen anwendbar sind.
+Daher ist es sinnvoll, beide Änderungen in einem Projekt zu bündeln.
+Es verlangt weitreichende Änderungen, die sowohl die Sprache als auch die \ac{jvm} betreffen.
 In Abschnitt~\ref{subsec:primitive-generics} erfolgt eine Vertiefung in dieses Thema.
 
 \subsection{Value Types}\label{subsec:value-types}
