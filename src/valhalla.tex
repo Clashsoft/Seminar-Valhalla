@@ -25,7 +25,12 @@ In Unterabschnitt~\ref{subsec:primitive-generics} erfolgt eine Vertiefung in die
 
 \subsection{Value Types}\label{subsec:value-types}
 
-% TODO
+\emph{Value Types} bezeichnen ein Sprachfeature, das benutzerdefinierte Typen erlauben soll, die keine Referenzsemantik besitzen.
+Das bedeutet, dass Instanzen dieser Typen als reine Werte repräsentiert werden und keine Referenzen verwendet werden.
+Wie bereits am Ende von Abschnitt~\ref{sec:memory-model} beschrieben, sollen diese aus Sicht des Programmierers wie Klassen funktionieren, sich aber wie primitive Datentypen verhalten.
+In diesem Abschnitt soll zunächst betrachtet werden, wie sich Value Types von Referenztypen unterscheiden.
+Daraufhin wird ein Vorgänger der Value Types vorgestellt, die \emph{Value-basierten Klassen}.
+Diese bilden die Grundlage für die eigentliche Implementierung der Value Types, die \emph{Inline-Klassen}.
 
 \subsubsection{Unterschiede zu Referenztypen}
 
