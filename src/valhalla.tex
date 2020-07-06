@@ -148,7 +148,7 @@ Dies kann aber in generischen Klassen nicht sichergestellt werden, solange der k
 Folglich muss statt \code{List<int>} eine \code{List<Integer>} verwendet werden.
 Zur Laufzeit kann dies jedoch aufgrund des Boxings die Performance beeinträchtigen:
 Sowohl das Boxing (Anlegen von \code{Integer}-Objekten) als auch das Unboxing (Extrahieren des \code{int}-Werts) benötigt Zeit, besonders aufgrund des Allokations- und Garbage-Collector-Overheads sowie der zusätzlichen Indirektion.
-Der erhöhte Speicherverbrauch, der bereits im vorherigen Abschnitt~\ref{subsec:value-types} gezeigt wurde, ist auch hier in ähnlichem Umfang vorhanden.
+Der erhöhte Speicherverbrauch, der bereits in Abschnitt~\ref{sec:memory-model} gezeigt wurde, ist auch hier in ähnlichem Umfang vorhanden.
 
 \subsubsection{Händische Spezialisierung}
 
