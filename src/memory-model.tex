@@ -52,7 +52,7 @@ Ebenfalls zu beachten ist der Speicherverbrauch, der sich wie folgt berechnet:
 
 \begin{equation}
     \begin{split}
-    Speicherverbrauch & = Array-Header + 3 \cdot (Referenz + Objekt-Header + 2 \cdot int) \\
+    \textit{Speicherverbrauch} & = \textit{Array-Header} + 3 \cdot (\textit{Referenz} + \textit{Objekt-Header} + 2 \cdot \textit{int}) \\
     & = \SI{24}{\Byte} + 3 \cdot (\SI{8}{\Byte} + \SI{16}{\Byte} + 2 \cdot \SI{4}{\Byte}) \\
     & = \SI{120}{\Byte}\label{eq:memory-usage-current} \\
     \end{split}
