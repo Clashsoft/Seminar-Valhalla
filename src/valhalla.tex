@@ -95,31 +95,6 @@ Für primitive Typen bleibt dieser \code{0} oder \code{false}, während Referenz
 Inline-Typen definieren ihren Default-Wert als eine Instanz, bei der alle Felder mit dem jeweiligen Default-Wert belegt sind.
 Im Bezug auf das obige Beispiel ist der Wert \code{Point.default} folglich äquivalent zu \code{new Point(0, 0)}.
 
-% Marker interfaces
-Unter Umständen kann es nützlich sein, zur Laufzeit zu ermitteln, ob es sich bei einem Wert um eine Referenz oder einen Inline-Wert handelt.
-Dafür werden neue Interfaces eingeführt, von denen automatisch und implizit alle Klassen erben:
-\code{IdentityObject} für Referenzen und \code{InlineObject} für Inline-Klassen.
-So kann entschieden werden, ob Identitätsoperationen wie \code{==} oder Synchronisierung sinnvoll sind.
-% Interfaces + Klassenvererbung
-Inline-Klassen dürfen auch reguläre Interfaces implementieren.
-Ebenfalls können sie von Klassen ohne \code{inline} erben, solange diese nicht den Anforderungen an Inline-Klassen widersprechen.
-Nicht erlaubt wären beispielsweise Superklassen mit nicht-finalen Feldern oder Methoden, die \code{synchronized} sind.
-Ein Beispiel für eine Klasse, welche die Anforderungen erfüllt, ist \code{Object}, von der weiterhin alle Klassen erben.
-
-% Boxing
-Mit der Unterordnung von primitiven Typen werden auch diese ohne Boxing von \code{Object} erben.
-Boxing wird dann zu einer Operation, die von der \ac{jvm} intern durchgeführt wird und nicht mehr nur durch den Compiler bereitgestellter syntaktischer Zucker ist.
-% Arrays
-Das hat zur Folge, dass Array-Typen anders voneinander erben.
-Insbesondere kann nun ein \code{int[]} direkt in ein \code{Integer[]} oder ein \code{Object[]} umgewandelt werden.
-Ein ähnliches Verhalten zeigen die benutzerdefinierten Inline-Klassen.
-% Referenz-Wrapper T.ref
-Anders als bei primitiven Typen gibt es jedoch dafür keine explizit definierten Referenz-Wrapper.
-Stattdessen soll neue Syntax hinzugefügt werden, mit der Referenz-Wrapper für Inline-Klassen benannt werden können.
-Diese nimmt die Form \code{T.ref} an, wobei \code{T} eine Inline-Klasse bezeichnet.
-Im Gegensatz dazu steht die Form \code{T.val}, die explizit den Inline-Typ benennt.
-Diese Formen sollen mit den bestehenden Namen für primitive und Wrapper-Typen kompatibel sein -- \code{int.ref} bezeichnet dann den selben Typ wie \code{Integer} und \code{Integer.val} entspricht \code{int}.
-
 \subsection{Primitive und generische Typen}\label{subsec:primitive-generics}
 
 Generische Typen sind ein Feature, das bereits in Java 5 eingeführt wurde.
