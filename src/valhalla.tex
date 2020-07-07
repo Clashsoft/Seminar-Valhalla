@@ -24,7 +24,7 @@ Die Erweiterung von generischen Typen um Unterstützung für primitive Typen ist
 Es handelt sich dabei um einen Kritikpunkt, der schon bei der Einführung von generischen Typen enstanden ist.
 Dieses Feature ist zudem erforderlich, damit die mit Value Types geplanten Verbesserungen auch in generischen Datenstrukturen anwendbar sind.
 Daher ist es sinnvoll, beide Änderungen in einem Projekt zu bündeln.
-Es verlangt weitreichende Änderungen, die sowohl die Sprache als auch die \ac{jvm} betreffen.
+Die Erweiterung verlangt weitreichende Änderungen, die sowohl die Sprache als auch die \ac{jvm} betreffen.
 In Abschnitt~\ref{subsec:primitive-generics} erfolgt eine Vertiefung in dieses Thema.
 
 \subsection{Value Types}\label{subsec:value-types}
@@ -34,7 +34,7 @@ Das bedeutet, dass Instanzen dieser Typen als reine Werte repräsentiert werden 
 Wie bereits am Ende von Abschnitt~\ref{sec:memory-model} beschrieben, sollen diese aus Sicht des Programmierers wie Klassen funktionieren, sich aber wie primitive Datentypen verhalten.
 In diesem Abschnitt wird zunächst ein Vorgänger der Value Types vorgestellt, die \emph{Value-basierten Klassen}.
 Diese bilden die Grundlage für die eigentliche Implementierung der Value Types, die \emph{Inline-Klassen}.
-Sie repräsentieren den jüngsten einer Reihe von Prototypen, die während des Projekts entwickelt worden.
+Sie repräsentieren den jüngsten einer Reihe von Prototypen, die während des Projekts Valhalla entwickelt worden.
 
 \subsubsection{Value-basierte Klassen}
 
@@ -44,7 +44,7 @@ Value-basierte Klassen setzen voraus, dass alle Felder \code{final} sind, wodurc
 Weiterhin dürfen diese Klassen keinen öffentlich zugänglichen Konstruktor besitzen, sondern müssen stets über eine Factory-Methode instanziiert werden.
 Anders als ein Konstruktor, der beim Aufruf immer eine neue Instanz erstellt, darf eine Factory-Methode auch das selbe Objekte mehrfach zurückgeben, beispielsweise wenn sie ein Cache verwaltet.
 Da der Benutzer einer Value-basierten Klasse keine Kontrolle über die Identität der Instanzen hat, ist es nicht sinnvoll, Identitätsvergleiche mit \code{==} durchzuführen.
-Folglich müssen stets \code{equals} und \code{hashCode} implementiert werden.
+Folglich müssen stets die Methoden \code{equals} und \code{hashCode} implementiert werden.
 Identitäts-basierte Operationen und Synchronisierung auf Value-basierten Klassen sind zwar nicht verboten, da es sich um eine Konvention handelt, können aber zu unerwarteten Ergebnissen führen.
 Somit erfüllen Value-basierte Klassen fast alle zuvor genannten Punkte, durch die sich Value Types von Referenztypen unterscheiden.
 Ausnahmen sind \code{null} als möglicher Wert sowie die erlaubte Vererbung.
@@ -117,7 +117,7 @@ Nur durch Boxing kann die Umwandlung \code{int <-> Integer <-> Object} geschehen
 Dies kann aber in generischen Klassen nicht sichergestellt werden, solange der konkrete Typ nicht bekannt ist.
 Folglich muss statt \code{List<int>} eine \code{List<Integer>} verwendet werden.
 Zur Laufzeit kann dies jedoch aufgrund des Boxings die Performance beeinträchtigen:
-Sowohl das Boxing (Anlegen von \code{Integer}-Objekten) als auch das Unboxing (Extrahieren des \code{int}-Werts) benötigt Zeit, besonders aufgrund des Allokations- und Garbage-Collector-Overheads sowie der zusätzlichen Indirektion.
+Sowohl das Boxing (Erzeugen von \code{Integer}-Objekten) als auch das Unboxing (Extrahieren des \code{int}-Werts) benötigt Zeit, besonders aufgrund des Allokations- und Garbage-Collector-Overheads sowie der zusätzlichen Indirektion.
 Der erhöhte Speicherverbrauch, der bereits in Abschnitt~\ref{sec:memory-model} gezeigt wurde, ist auch hier in ähnlichem Umfang vorhanden.
 
 \subsubsection{Händische Spezialisierung}

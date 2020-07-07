@@ -6,7 +6,7 @@ Werte können in Variablen gespeichert werden und in Objekten verkapselt werden.
 Objekte selber sind keine Werte, da sie nicht direkt in Variablen gespeichert werden können.
 Einzig ist es möglich \emph{Referenzen} zu Objekten zu speichern.
 Dabei handelt es sich um Verweise, die auf den eigentlichen Speicherort der Objektdaten zeigen.
-Letzterer wird von der Java-Laufzeitumgebung verwaltet und ist nicht durch den Programmierer einsehbar.
+Letzterer wird von der Java-Laufzeitumgebung verwaltet und ist nicht durch den Programmierer beeinflussbar.
 Mehrere Referenzen können auf den selben Speicherort und somit auf dasselbe Objekt zeigen, wodurch Objekte eine Identität erhalten.
 
 % Indirektion
@@ -29,7 +29,7 @@ Werte und Objekte haben eine feste Größe und damit einen Speicherverbrauch.
 Zahlen vom Typ \code{int} sind beispielsweise 32 Bit und damit 4 Byte groß.
 Referenzen haben eine feste Größe von 8 Byte auf einer 64-bit \ac{jvm}.
 Der Speicherverbrauch eines Objekts berechnet sich aus der Summe der Größe der enthaltenen Werte plus einen Objekt-Header mit einer festen Größe von 16 Byte\footnote{Mit dem \ac{jvm}-Flag \code{-XX:+UseCompressedOops} könnte dies auf 12 Byte reduziert werden, allerdings kommen dann 4 Byte Padding hinzu, da die Größe von Objekten im Heap ein Vielfaches von 8 Byte sein muss~\cite{compressed-oops}.}.
-Arrays, eine spezielle Art von Objekten mit einer variablen Anzahl von Elementen, berechnen ihren Speicherverbrauch aus einem 24 Byte großen Header plus die Summe des Speicherverbrauchs der Werte, die die Elemente bilden.
+Arrays, eine spezielle Art von Objekten mit einer variablen Anzahl von Elementen, berechnen ihren Speicherverbrauch aus einem 24 Byte großen Header plus die Summe des Speicherverbrauchs der Werte, welche die Elemente bilden.
 ~\cite{compressed-oops}
 
 % Beispiel
