@@ -81,9 +81,3 @@ Statt \code{points[1].y} muss nun \code{flatPoints[3]} verwendet werden, um die 
 Das erschwert den Programmieraufwand und ist fehleranfälliger.
 Weiterhin ist es nicht mehr direkt möglich, einen ganzen Punkt aus dem Array zur Weiterverarbeitung zu entnehmen, wie es zuvor mit \code{points[i]} möglich war.
 Eine optimale Lösung wäre ein Kompromiss zwischen beiden Ansätzen, sodass beim Programmieren ein \code{Point[]} verwendet werden kann, während zur Laufzeit das Speicherlayout wie auf der rechten Seite von Abbildung~\ref{fig:memory-usage} aussieht.
-
-% TODO woanders
-%Neben Punkten lassen sich mit Value Types eine Vielzahl von neuen Datentypen definieren, die breite Anwendung finden können.
-%Dazu gehören im Bereich der numerischen Datenverarbeitung komplexe, vorzeichenlose und Dezimalzahlen, Binärzahlen größer als 64 bit und Vektoren, die auf modernen \acp{cpu} effizient verarbeitet werden können.
-%Auch algebraische Datentypen wie \code{Optional}, \code{Either}, \code{Unit} und Tupel sind wichtige Einsatzmöglichkeiten.
-%Letztere benötigen jedoch besondere Sprachunterstützung, die noch nicht Teil des Projekts ist.

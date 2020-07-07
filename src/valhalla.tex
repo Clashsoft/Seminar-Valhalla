@@ -82,6 +82,12 @@ Weiterhin kann nun für alle Typen ein Default-Wert definiert werden, der mit \c
 Für primitive Typen bleibt dieser \code{0} oder \code{false}, während Referenztypen \code{null} beibehalten.
 Inline-Typen definieren ihren Default-Wert als eine Instanz, bei der alle Felder mit dem jeweiligen Default-Wert belegt sind.
 Im Bezug auf das obige Beispiel ist der Wert \code{Point.default} folglich äquivalent zu \code{new Point(0, 0)}.
+Detaillierte Informationen zu weiteren konzeptuellen und syntaktischen Änderungen lassen sich aus~\cite{object-model} entnehmen.
+% Anwendungsbeispiele
+Mit Inline-Klassen lassen sich eine Vielzahl von neuen Datentypen definieren, die breite Anwendung finden können.
+Dazu gehören im Bereich der numerischen Datenverarbeitung komplexe, vorzeichenlose und Dezimalzahlen, Binärzahlen größer als 64 bit und Vektoren, die auf modernen \acp{cpu} effizient verarbeitet werden können.
+Auch algebraische Datentypen wie \code{Optional}, \code{Either}, \code{Unit} und Tupel sind wichtige Einsatzmöglichkeiten.
+Letztere benötigen jedoch besondere Sprachunterstützung, die bisher nicht geplant ist.
 
 \subsection{Primitive und generische Typen}\label{subsec:primitive-generics}
 
