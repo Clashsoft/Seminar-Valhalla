@@ -71,9 +71,9 @@ Dadurch ergibt sich ein deutlich kleinerer Speicherverbrauch:
     \end{split}
 \end{equation}
 
-Folglich konnten $\SI{72}{\Byte}$ eingespart werden.
+Folglich konnten 72 Byte eingespart werden.
 Der Effekt wird verstärkt, wenn das Array mehr Elemente enthält.
-Zu beachten ist auch, dass die gesamten Daten des Arrays mit einer Größe von $\SI{48}{\Byte}$ in eine Cache-Zeile passen, wenn bei deren Größe von $\SI{64}{\Byte}$ ausgangen wird.
+Zu beachten ist auch, dass die gesamten Daten des Arrays mit einer Größe von 48 Byte in eine Cache-Zeile passen, wenn bei deren Größe von 64 Byte ausgangen wird.
 
 Ein Nachteil dieser Datenmodellierung ist, dass nun der Zugriff auf einzelne Koordinaten erschwert wird.
 Statt \code{points[1].y} muss nun \code{flatPoints[3]} verwendet werden, um die y-Koordinate des zweiten Punkts im Array zu erhalten.
