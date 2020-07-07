@@ -1,6 +1,6 @@
 \section{Das Speichermodell von Java}\label{sec:memory-model}
 
-Das Speichermodell von Java beruht in erster Instanz auf \emph{Werten}.
+Das Speichermodell von Java besteht auf kleinster Ebene aus \emph{Werten}.
 Einfache Werte sind Zahlen in verschiedenen Größen und die boolschen Werte \code{true} und \code{false}.
 Werte können in Variablen gespeichert werden und in Objekten verkapselt werden.
 Objekte selber sind keine Werte, da sie nicht direkt in Variablen gespeichert werden können.
@@ -79,7 +79,7 @@ Zu beachten ist auch, dass die gesamten Daten des Arrays mit einer Größe von $
 Ein Nachteil dieser Datenmodellierung ist, dass nun der Zugriff auf einzelne Koordinaten erschwert wird.
 Statt \code{points[1].y} muss nun \code{flatPoints[3]} verwendet werden, um die y-Koordinate des zweiten Punkts im Array zu erhalten.
 Das erschwert den Programmieraufwand und ist fehleranfälliger.
-Weiterhin ist es nicht mehr direkt möglich, einen ganzen Punkt aus dem Array zur Weiterverarbeitung zu entnehmen.
+Weiterhin ist es nicht mehr direkt möglich, einen ganzen Punkt aus dem Array zur Weiterverarbeitung zu entnehmen, wie es zuvor mit \code{points[i]} möglich war.
 Eine optimale Lösung wäre ein Kompromiss zwischen beiden Ansätzen, sodass beim Programmieren ein \code{Point[]} verwendet werden kann, während zur Laufzeit das Speicherlayout wie auf der rechten Seite von Abbildung~\ref{fig:memory-usage} aussieht.
 
 % TODO woanders
