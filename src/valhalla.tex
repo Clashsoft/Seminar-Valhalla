@@ -17,7 +17,7 @@ Bei den Value Objects handelt es sich also um ein reines \ac{jvm}-Feature, das f
 Im Projekt Valhalla hingegen wird auch sprachliche Unterstützung für Objekte als Werte angestrebt.
 Dies wird in Abschnitt~\ref{subsec:value-types} betrachtet.
 
-Die \emph{Variable Handles} bezeichnen einen Teil der Java-Standardbibliothek, die präzisere Zugriffskontrolle auf Felder von Objekten und Array-Elementen im Kontext von nebenläufigen Programmen ermöglichen.
+Die \emph{Variable Handles} bezeichnen einen Teil der Java-Standardbibliothek, die präzisere Zugriffskontrolle auf Felder von Objekten und Array-Elemente im Kontext von nebenläufigen Programmen ermöglichen.
 Die Implementierung der \ac{api} erfolgte bereits in Java 9 und wird daher nicht näher in dieser Arbeit betrachtet.
 
 Die Erweiterung von generischen Typen um Unterstützung für primitive Typen ist der größte Teil des Projekts.
@@ -94,7 +94,7 @@ So kann beispielsweise eine \code{Map}-Klasse erstellt werden, bei der Schlüsse
 Bei der Verwendung der Klasse werden die Typen festgelegt: \code{Map<String, Integer>}.
 Dadurch können typsichere Datenstrukturen definiert werden.
 In diesem Abschnitt wird betrachtet, wie generische Typen implementiert werden können und wie sich die verschiedenen Ansätze auf die Kompatibilität mit primitiven Typen auswirken.
-Einige dieser Ansätze sind bereits in heutigen Java-Versionen vertreten, anderen wurden als Prototypen für Valhalla in Betracht gezogen.
+Einige dieser Ansätze sind bereits in heutigen Java-Versionen vertreten, andere wurden als Prototypen für Valhalla in Betracht gezogen.
 Dieser Abschnitt gibt einen chronologischen Überblick.
 
 \subsubsection{Erasure}
