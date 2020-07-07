@@ -45,10 +45,8 @@ Weiterhin dürfen diese Klassen keinen öffentlich zugänglichen Konstruktor bes
 Anders als ein Konstruktor, der beim Aufruf immer eine neue Instanz erstellt, darf eine Factory-Methode auch das selbe Objekte mehrfach zurückgeben, beispielsweise wenn sie ein Cache verwaltet.
 Da der Benutzer einer Value-basierten Klasse keine Kontrolle über die Identität der Instanzen hat, ist es nicht sinnvoll, Identitätsvergleiche mit \code{==} durchzuführen.
 Folglich müssen stets die Methoden \code{equals} und \code{hashCode} implementiert werden.
-Identitäts-basierte Operationen und Synchronisierung auf Value-basierten Klassen sind zwar nicht verboten, da es sich um eine Konvention handelt, können aber zu unerwarteten Ergebnissen führen.
-Somit erfüllen Value-basierte Klassen fast alle zuvor genannten Punkte, durch die sich Value Types von Referenztypen unterscheiden.
-Ausnahmen sind \code{null} als möglicher Wert sowie die erlaubte Vererbung.
-Beides ist jedoch bei derzeitigen Beispielen für Value-basierte Klassen wie \code{Integer} und \code{Optional} ohnehin nicht üblich.
+Value-basierte Klassen erlauben sowohl \code{null} als möglichen Wert, als auch Vererbung.
+Beide Konzepte sind mit reinen Value Types nicht kompatibel.
 
 \subsubsection{Inline-Klassen}
 
