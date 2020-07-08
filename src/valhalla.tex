@@ -109,7 +109,7 @@ Generische Typen konnten so implementiert werden, ohne Änderungen an der \ac{jv
 
 % Migration mit Erasure
 Erasure ermöglichte ferner den Entwicklern, schrittweise auf generische Typen umzusteigen.
-Die Benutzung von \code{Map} war weiterhin ohne Angabe der Schlüssel- und Wert-Typen erlaubt -- dies wird als Raw Type bezeichnet und verhält sich ähnlich wie \code{Map<Object, Object>}.
+Die Benutzung von \code{Map} war weiterhin ohne Angabe der Schlüssel- und Wert-Typen erlaubt -- dies wird als Raw Type bezeichnet und verhält sich ähnlich wie der generische Typ \code{Map<Object, Object>}.
 Die Wahrung der Kompatibilität war ein besonderes Ziel bei der Entwicklung der generischen Typen.
 Es sollte vermieden werden, dass Entwickler sämtlichen Code neu kompilieren müssen.
 
@@ -171,7 +171,7 @@ Dafür wurde in der Literatur zu Valhalla vorläufig das Schlüsselwort \code{an
 % Layers
 Eine weitere vorgeschlagene syntaktische Neuerung sind die \emph{Layers}, welche es ermöglichen, in bestimmten Spezialisierungen neue Methoden hinzuzufügen.
 Sie sind aus dem Problem entstanden, dass die meisten bestehenden generischen Klassen unter der Annahme implementiert wurden, dass sie nur mit Referenztypen verwendet werden.
-So kann beispielsweise die Methode \code{V get(K key)} der Klasse \code{Map<K, V>} \code{null} zurückgeben, wenn der Schlüssel nicht vorhanden ist.
+So kann beispielsweise die Methode \code{V get(K key)} der Klasse \code{Map<K, V>} den Wert \code{null} zurückgeben, wenn der Schlüssel nicht vorhanden ist.
 Dies ist jedoch nicht möglich, wenn \code{V=int} ist.
 Mithilfe von Layers kann festgelegt werden, dass es die \code{get}-Methode nur dann geben soll, wenn \code{V} ein Referenztyp ist.
 Andernfalls könnte eine neue Methode \code{getOrDefault} hinzugefügt werden.
