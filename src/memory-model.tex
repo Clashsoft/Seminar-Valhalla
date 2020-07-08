@@ -2,9 +2,9 @@
 
 Das Speichermodell von Java besteht auf kleinster Ebene aus \emph{Werten}.
 Einfache Werte sind Zahlen in verschiedenen Größen und die boolschen Werte \code{true} und \code{false}.
-Werte können in Variablen gespeichert werden und in Objekten verkapselt werden.
+Werte können in Variablen gespeichert und in Objekten verkapselt werden.
 Objekte selber sind keine Werte, da sie nicht direkt in Variablen gespeichert werden können.
-Einzig ist es möglich, \emph{Referenzen} auf Objekte zu speichern.
+Stattdessen ist es möglich, \emph{Referenzen} auf Objekte zu speichern.
 Dabei handelt es sich um Verweise, die auf den eigentlichen Speicherort des Objekts zeigen.
 Letzterer wird von der Java-Laufzeitumgebung verwaltet und ist nicht durch den Programmierer beeinflussbar.
 Mehrere Referenzen können auf den selben Speicherort und somit auf dasselbe Objekt zeigen, wodurch Objekte eine Identität erhalten.
@@ -12,29 +12,29 @@ Mehrere Referenzen können auf den selben Speicherort und somit auf dasselbe Obj
 % Indirektion
 Um auf einen Wert in einem Objekt zuzugreifen, dessen Referenz in einer Variable gespeichert ist, muss diese zunächst \emph{dereferenziert} werden.
 Dazu wird der Inhalt des Speichers an der Stelle geladen, auf welche die Referenz zeigt -- dies wird als \emph{Indirektion} bezeichnet.
-Wenn Referenzen in einem Objekt gespeichert werden, benötigt ein Zugriff auf einen Wert in einem geschachtelten Objekt zwei Indirektionsschritte.
-Es müssen folglich Daten von drei verschiedenen Orten im Speicher gelesen werden.
+Wenn Referenzen in einem Objekt gespeichert werden, benötigt ein Zugriff auf einen Wert in einem geschachtelten Objekt zwei Dereferenzierungen.
+Es müssen folglich Daten von zwei verschiedenen Orten im Speicher gelesen werden.
 
 % Speicherebenen, Lokalität
-Moderne Hardware organisiert den Speicher in verschiedene Ebenen.
+Moderne Hardware organisiert den Speicher in verschiedenen Ebenen.
 \acp{cpu} haben neben den Registern, in denen die eigentliche Datenverarbeitung stattfindet, mehrere Cache-Ebenen, die Daten aus dem Hauptspeicher zwischenspeichern.
-Während der Speicherplatz von Register über die Cache-Ebenen bis zum Hauptspeicher mit jedem Schritt circa um den Faktor 100 bis 1000 steigt, erhöhen sich auch die Zugriffszeiten in ähnlicher Größenordnung.
-Gleichzeitig werden Daten stets in Blöcken von Hauptspeicher zum Cache kopiert, den sogenannten \emph{Cache-Zeilen}.
-Folglich muss bei dreifachem Zugriff auf Daten, die nicht im gleichen Block im Arbeitsspeicher liegen, dreifach auf diesen zugegriffen werden.
-Wenn stattdessen die Daten nah beieinander liegen, muss dies nur einmal geschehen.
+Während der Speicherplatz von Registern über die Cache-Ebenen bis zum Hauptspeicher mit jedem Schritt um den Faktor 100 bis 1000 steigt, erhöhen sich auch die Zugriffszeiten in ähnlicher Größenordnung.
+Gleichzeitig werden Daten stets in Blöcken vom Hauptspeicher zum Cache kopiert, den sogenannten \emph{Cache-Zeilen}.
+Zugriff auf Daten, die nicht im Bereich einer Cache-Zeile liegen, kann zu mehreren zeitintensiven Zugriffen auf den Hauptspeicher führen.
+Dies kann beispielsweise bei doppelter Indirektion auftreten, da Objekte an beliebigen Stellen im Speicher liegen können.
 
 % Speicherverbrauch
-Werte und Objekte haben eine feste Größe und damit einen Speicherverbrauch.
+Werte und Objekte haben eine feste Größe.
 Zahlen vom Typ \code{int} sind beispielsweise 4 Byte groß.
-Referenzen haben eine feste Größe von 8 Byte auf einer 64-bit \ac{jvm}.
-Der Speicherverbrauch eines Objekts berechnet sich aus der Summe der Größe der enthaltenen Werte plus einen Objekt-Header mit einer festen Größe von 16 Byte\footnote{Mit dem \ac{jvm}-Flag \code{-XX:+UseCompressedOops} könnte dies auf 12 Byte reduziert werden, allerdings kommen dann 4 Byte Padding hinzu, da die Größe von Objekten im Heap ein Vielfaches von 8 Byte sein muss~\cite{compressed-oops}.}.
+Referenzen haben eine Größe von 8 Byte auf einer 64-bit \ac{jvm}.
+Der Speicherverbrauch eines Objekts berechnet sich aus der Summe der Größe der enthaltenen Werte plus einen Objekt-Header mit einer Größe von 16 Byte\footnote{Mit dem \ac{jvm}-Flag \code{-XX:+UseCompressedOops} könnte dies auf 12 Byte reduziert werden, allerdings kommen dann 4 Byte Padding hinzu, da die Größe von Objekten im Heap ein Vielfaches von 8 Byte sein muss.}.
 Arrays, eine spezielle Art von Objekten mit einer variablen Anzahl von Elementen, berechnen ihren Speicherverbrauch aus einem 24 Byte großen Header plus die Summe des Speicherverbrauchs der Werte, welche die Elemente bilden.
 ~\cite{compressed-oops}
 
 % Beispiel
-Es soll nun ein Beispiel betrachtet werden, um das Speichermodell von Java näher zu erläutern und die Probleme zu zeigen, die dadurch entstehen.
+Es werden nun an einem Beispiel das Speichermodell von Java erläutert und die Probleme gezeigt, die dadurch entstehen.
 Modelliert werden einige ganzzahlige Punkte, die im zweidimensionalen Raum liegen und einen Pfad bilden sollen.
-Die Punkte sind als Objekte mit zwei \code{int}-Feldern implementiert, der Pfad als Array von Punkten.
+Die Punkte sind als Objekte mit zwei \code{int}-Feldern implementiert, der Pfad ist als Array von Punkten repräsentiert.
 Es werden drei Punkte erstellt und in einem Array abgelegt, welches in einer Variable gespeichert wird.
 Abbildung~\ref{fig:memory-usage} stellt diese Situation auf der linken Seite dar.
 
@@ -46,8 +46,8 @@ Abbildung~\ref{fig:memory-usage} stellt diese Situation auf der linken Seite dar
     \label{fig:memory-usage}
 \end{figure}
 
-Hier ist die doppelte Indirektion von der Variable bis zu einem der Punkte durch Verfolgen der Pfeile zu erkennen.
-Um anhand der Variable auf einen Koordinate zuzugreifen, werden im schlechtesten Fall zwei Zugriffe auf den Hauptspeicher benötigt, da die Objekte an beliebigen Stellen darin liegen können.
+Die doppelte Indirektion von der Variable bis zu einem der Punkte ist durch Folgen der Pfeile nachzuvollziehen.
+Es gelten die zeitlichen Probleme, die bereits erläutert wurden.
 Ebenfalls zu beachten ist der Speicherverbrauch, der sich wie folgt berechnet:
 
 \begin{equation}
@@ -71,11 +71,11 @@ Dadurch ergibt sich ein deutlich kleinerer Speicherverbrauch:
     \end{split}
 \end{equation}
 
-Folglich konnten 72 Byte eingespart werden.
-Der Effekt wird verstärkt, wenn das Array mehr Elemente enthält.
-Zu beachten ist auch, dass die gesamten Daten des Arrays mit einer Größe von 48 Byte in eine Cache-Zeile passen, wenn bei deren Größe von 64 Byte ausgangen wird.
+Folglich konnten mit dieser Repräsentation 72 Byte eingespart werden.
+Die Einsparungen steigen, wenn das Array mehr Elemente enthält.
+Zu beachten ist auch, dass die gesamten Daten des Arrays mit einer Größe von 48 Byte in eine Cache-Zeile passen, wenn davon ausgegangen wird, dass diese 64 Byte umfassen.
 
-Ein Nachteil dieser Datenmodellierung ist, dass nun der Zugriff auf einzelne Koordinaten erschwert wird.
+Ein Nachteil der Datenmodellierung ohne Objekte ist, dass nun der Zugriff auf einzelne Koordinaten erschwert wird.
 Statt \code{points[1].y} muss nun \code{flatPoints[3]} verwendet werden, um die y-Koordinate des zweiten Punkts im Array zu erhalten.
 Das erschwert den Programmieraufwand und ist fehleranfälliger.
 Weiterhin ist es nicht mehr direkt möglich, einen ganzen Punkt aus dem Array zur Weiterverarbeitung zu entnehmen, wie es zuvor mit \code{points[i]} möglich war.
