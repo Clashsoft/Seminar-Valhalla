@@ -1,8 +1,9 @@
 \section{Projekt Valhalla}\label{sec:valhalla}
 
-Das OpenJDK-Projekt \emph{Valhalla}~\cite{openjdk-valhalla} wurde 2014 begonnen und wird von der HotSpot-Gruppe gesponsort.
+Das OpenJDK-Projekt \emph{Valhalla} wurde 2014 begonnen und wird von der HotSpot-Gruppe gesponsort.
 Der Projektleiter ist der Java-Spracharchitekt Brian Goetz.
 Es besteht aus drei wesentlichen Neuerungen, die in folgenden \acp{jep} definiert sind:
+~\cite{openjdk-valhalla}
 
 \begin{itemize}
     \itemsep0em
@@ -14,39 +15,39 @@ Es besteht aus drei wesentlichen Neuerungen, die in folgenden \acp{jep} definier
 Grundlage für das Projekt stellen die \emph{Value Objects} dar.
 Das Ziel des \ac{jep} 169 ist, die \ac{jvm} dahingehend zu erweitern, dass Objekte zur Laufzeit als Werte repräsentiert werden können.
 Es ist jedoch explizit nicht vorgesehen, Änderungen an der Sprache durchzuführen.
-Bei den Value Objects handelt es sich also um ein reines \ac{jvm}-Feature, das für Programmierer zunächst nicht direkt zugänglich ist.
+Bei den Value Objects handelt es sich also um ein reines \ac{jvm}-Feature.
 Im Projekt Valhalla hingegen wird auch sprachliche Unterstützung für Objekte als Werte angestrebt.
 Dies wird in Abschnitt~\ref{subsec:value-types} betrachtet.
 
 Die \emph{Variable Handles} bezeichnen einen Teil der Java-Standardbibliothek, die präzisere Zugriffskontrolle auf Felder von Objekten und Array-Elemente im Kontext von nebenläufigen Programmen ermöglichen.
-Die Implementierung der \ac{api} erfolgte bereits in Java 9 und wird daher nicht näher in dieser Arbeit betrachtet.
+Die Implementierung der \ac{api} erfolgte bereits in Java 9~\cite{jep-193} und wird daher nicht näher in dieser Arbeit betrachtet.
 
-Die Erweiterung von generischen Typen um Unterstützung für primitive Typen ist der größte Teil des Projekts.
+Die Erweiterung von generischen Typen, sodass sie mit primitive Typen kompatibel sind, ist der größte Teil des Projekts.
 Es handelt sich dabei um einen Kritikpunkt, der schon bei der Einführung von generischen Typen enstanden ist.
-Dieses Feature ist zudem erforderlich, damit die mit Value Types geplanten Verbesserungen auch in generischen Datenstrukturen anwendbar sind.
+Die Erweiterung ist zudem erforderlich, damit die mit Value Types geplanten Verbesserungen auch in generischen Datenstrukturen anwendbar sind.
 Daher ist es sinnvoll, beide Änderungen in einem Projekt zu bündeln.
-Die Erweiterung verlangt weitreichende Änderungen, die sowohl die Sprache als auch die \ac{jvm} betreffen.
+Die Anpassung generischer Typen erfordert weitreichende Eingriffe, die sowohl die Sprache als auch die \ac{jvm} betreffen.
 In Abschnitt~\ref{subsec:primitive-generics} erfolgt eine Vertiefung in dieses Thema.
 
 \subsection{Value Types}\label{subsec:value-types}
 
 \emph{Value Types} bezeichnen ein Sprachfeature, das benutzerdefinierte Typen erlauben soll, die keine Referenzsemantik besitzen.
-Das bedeutet, dass Instanzen dieser Typen als reine Werte repräsentiert werden und keine Referenzen verwendet werden.
+Das bedeutet, dass Instanzen dieser Typen als reine Werte repräsentiert werden und keine Referenzen verwenden.
 Wie bereits am Ende von Abschnitt~\ref{sec:memory-model} beschrieben, sollen diese aus Sicht des Programmierers wie Klassen funktionieren, sich aber wie primitive Datentypen verhalten.
-In diesem Abschnitt wird zunächst ein Vorgänger der Value Types vorgestellt, die \emph{Value-basierten Klassen}.
-Diese bilden die Grundlage für die eigentliche Implementierung der Value Types, die \emph{Inline-Klassen}.
-Sie repräsentieren den jüngsten einer Reihe von Prototypen, die während des Projekts Valhalla entwickelt worden.
+Im Nachfolgenden wird zunächst ein Vorgänger der Value Types vorgestellt: die \emph{Value-basierten Klassen}.
+Diese bilden die Grundlage für die eigentliche Implementierung der Value Types: die \emph{Inline-Klassen}.
+Sie repräsentieren den jüngsten in einer Reihe von Prototypen, die während des Projekts Valhalla entwickelt wurden.
 
 \subsubsection{Value-basierte Klassen}
 
 Seit Java 8 gibt es bereits ein Konzept, das den Value Types ähnelt: die Value-basierten Klassen~\cite{value-based-classes}.
 Dabei handelt es sich um eine Konvention, die von einigen Klassen der Standardbibliothek eingehalten wird und auch für Bibliotheksautoren und andere Endbenutzer der Sprache verfügbar ist.
-Value-basierte Klassen setzen voraus, dass alle Felder \code{final} sind, wodurch Instanzen dieser Klassen unveränderbar sind.
+Value-basierte Klassen setzen voraus, dass alle Felder \code{final} sind, was Instanzen dieser Klassen unveränderbar macht.
 Weiterhin dürfen diese Klassen keinen öffentlich zugänglichen Konstruktor besitzen, sondern müssen stets über eine Factory-Methode instanziiert werden.
 Anders als ein Konstruktor, der beim Aufruf immer eine neue Instanz erstellt, darf eine Factory-Methode auch das selbe Objekte mehrfach zurückgeben, beispielsweise wenn sie ein Cache verwaltet.
-Da der Benutzer einer Value-basierten Klasse keine Kontrolle über die Identität der Instanzen hat, ist es nicht sinnvoll, Identitätsvergleiche mit \code{==} durchzuführen.
+Da der Benutzer einer Value-basierten Klasse keine Kontrolle über die Identität der Instanzen hat, ist es nicht ratsam, Identitätsvergleiche mit \code{==} durchzuführen.
 Folglich müssen stets die Methoden \code{equals} und \code{hashCode} implementiert werden.
-Value-basierte Klassen erlauben sowohl \code{null} als möglichen Wert, als auch Vererbung.
+Value-basierte Klassen erlauben sowohl Vererbung als auch \code{null} als möglichen Wert.
 Beide Konzepte sind mit reinen Value Types nicht kompatibel.
 
 \subsubsection{Inline-Klassen}
@@ -56,7 +57,6 @@ Diese trägt die Bezeichnung \emph{Inline-Klassen}~\cite{object-model}, die sich
 Inline-Klassen sollen als vollwertige Implementierung der Value Types dienen.
 Listing~\ref{inline-class-example} zeigt, wie eine Inline-Klasse aussehen kann.
 Dabei ist zu beachten, dass sich der Code nur durch das Schlüsselwort \code{inline} von einer regulären Klasse unterscheidet.
-Nach dem Motto ``Codes like a class, works like an int''~\cite{object-model} sollen die syntaktischen Änderungen bewusst klein sein.
 
 \begin{listing}
     \begin{minted}{java}
@@ -76,29 +76,28 @@ Nach dem Motto ``Codes like a class, works like an int''~\cite{object-model} sol
 
 % Primitive untergeordnet
 Mit der Einführung von Inline-Klassen wird die Unterscheidung zwischen primitiven und Referenz-Typen abgeschafft.
-Nun wird zwischen Inline- und Referenz-Typen unterschieden;
-die primitiven Typen werden den Inline-Typen untergeordnet.
+Nun wird zwischen Inline- und Referenz-Typen unterschieden und die primitiven Typen werden den Inline-Typen untergeordnet.
 % T.default
-Weiterhin kann nun für alle Typen ein Default-Wert definiert werden, der mit \code{T.default} bezeichnet wird.
+Weiterhin kann nun für alle Typen ein Default-Wert definiert werden, der die Syntax \code{T.default} verwendet.
 Für primitive Typen bleibt dieser \code{0} oder \code{false}, während Referenztypen \code{null} beibehalten.
 Inline-Typen definieren ihren Default-Wert als eine Instanz, bei der alle Felder mit dem jeweiligen Default-Wert belegt sind.
-Im Bezug auf das obige Beispiel ist der Wert \code{Point.default} folglich äquivalent zu \code{new Point(0, 0)}.
-Detaillierte Informationen zu weiteren konzeptuellen und syntaktischen Änderungen lassen sich aus~\cite{object-model} entnehmen.
+In Bezug auf das Beispiel in Listing~\ref{inline-class-example} ist der Ausdruck \code{Point.default} folglich äquivalent zu \code{new Point(0, 0)}.
+
 % Anwendungsbeispiele
 Mit Inline-Klassen lassen sich eine Vielzahl von neuen Datentypen definieren, die breite Anwendung finden können.
-Dazu gehören im Bereich der numerischen Datenverarbeitung komplexe, vorzeichenlose und Dezimalzahlen, Binärzahlen größer als 64 bit und Vektoren, die auf modernen \acp{cpu} effizient verarbeitet werden können.
+Dazu gehören im Bereich der numerischen Datenverarbeitung komplexe, vorzeichenlose und Dezimalzahlen, Binärzahlen größer als 64 bit sowie Vektoren.
 Auch algebraische Datentypen wie \code{Optional}, \code{Either}, \code{Unit} und Tupel sind wichtige Einsatzmöglichkeiten.
-Letztere benötigen jedoch besondere Sprachunterstützung, die bisher nicht geplant ist.
+Tupel benötigen jedoch besondere Sprachunterstützung, die bisher nicht geplant ist.
 
 \subsection{Primitive und generische Typen}\label{subsec:primitive-generics}
 
-Generische Typen sind ein Feature, das bereits in Java 5 eingeführt wurde.
+Generische Typen sind ein Feature, das bereits in Java 5 eingeführt wurde~\cite{specialization}.
 Sie ermöglichen es, Klassen und Methoden zu definieren, die über verwendete Typen abstrahieren.
 Dabei kommen Typparameter als Platzhalter zum Einsatz.
 So kann beispielsweise eine \code{Map}-Klasse erstellt werden, bei der Schlüssel und Werte beliebig, aber fest typisiert sind.
 Bei der Verwendung der Klasse werden die Typen festgelegt: \code{Map<String, Integer>}.
 Dadurch können typsichere Datenstrukturen definiert werden.
-In diesem Abschnitt wird betrachtet, wie generische Typen implementiert werden können und wie sich die verschiedenen Ansätze auf die Kompatibilität mit primitiven Typen auswirken.
+In diesem Abschnitt wird betrachtet, welche Ansätze es für die Implementierung von generischen Typen gibt und wie sich diese auf die Kompatibilität mit primitiven Typen auswirken.
 Einige dieser Ansätze sind bereits in heutigen Java-Versionen vertreten, andere wurden als Prototypen für Valhalla in Betracht gezogen.
 Dieser Abschnitt gibt einen chronologischen Überblick.
 
@@ -109,7 +108,7 @@ Beim Generieren von Bytecode ersetzt der Java-Compiler sämtliche Vorkommen von 
 Generische Typen konnten so implementiert werden, ohne Änderungen an der \ac{jvm} vornehmen zu müssen.
 
 % Migration mit Erasure
-Erasure ermöglichte ferner den Entwicklern, schrittweise auf generische Typen umsteigen.
+Erasure ermöglichte ferner den Entwicklern, schrittweise auf generische Typen umzusteigen.
 Die Benutzung von \code{Map} war weiterhin ohne Angabe der Schlüssel- und Wert-Typen erlaubt -- dies wird als Raw Type bezeichnet und verhält sich ähnlich wie \code{Map<Object, Object>}.
 Die Wahrung der Kompatibilität war ein besonderes Ziel bei der Entwicklung der generischen Typen.
 Es sollte vermieden werden, dass Entwickler sämtlichen Code neu kompilieren müssen.
@@ -136,17 +135,17 @@ Mehrere Klassen variieren ebenfalls im Rückgabetyp der Methode.
 Händische Spezialisierungen können zwar für verbesserte Performance sorgen, besonders wenn typspezifische Optimierungen vorgenommen werden, erzeugen aber einen erhöhten Wartungsaufwand und sind fehleranfälliger.
 
 % Einfluss von Value Types
-In bisherigen Java-Versionen ist das Problem nur auf die acht primitiven Typen beschränkt.
-Werden diese acht auf die drei häufigsten -- \code{int}, \code{long} und \code{double} -- reduziert, kann die Anzahl der händischen Spezialisierungen eingeschränkt werden.
-Dies ist jedoch nicht mehr möglich, wenn mit Value Types eine unendliche Zahl neuer Typen hinzukommen, die sich ähnlich wie primitive verhalten sollen.
-Es wäre nicht sinnvoll, den Speicherverbrauch von Arrays zu verringern, wenn das nicht auch mit Listen möglich ist, da diese in den meisten Fällen die bessere Wahl sind.
+In bisherigen Java-Versionen ist das Problem nur auf die neun primitiven Typen (\code{int}, \code{long}, \code{float}, \code{double}, \code{byte}, \code{short}, \code{char}, \code{boolean} und \code{void}) beschränkt.
+Werden diese neun auf die drei häufigsten -- \code{int}, \code{long} und \code{double} -- reduziert, kann die Anzahl der händischen Spezialisierungen eingeschränkt werden.
+Dies ist jedoch nicht mehr möglich, wenn mit Value Types eine unendliche Zahl neuer Typen mit primitiven Eigenschaften hinzukommen.
+Es wäre nicht sinnvoll, den Speicherverbrauch von Arrays zu verringern, wenn diese Optimierung nicht auch auf Listen anwendbar ist.
 Folglich ist es naheliegend, dass die Änderung von generischen Typen zusammen mit den neuen Value Types eingeführt wird.
 
 \subsubsection{Spezialisierung durch den Compiler}
 
-Ein Ansatz, der das Wartungsproblem der händischen Spezialisierung vermeidet, ist Spezialisierung durch den Compiler.
+Ein Ansatz, der das Wartungsproblem der händischen Spezialisierung vermeidet, ist die Spezialisierung durch den Compiler.
 Diese Technik kommt beispielsweise in C++ zum Einsatz, wo der Compiler Typparameter wie bei einer Vorlage durch die konkreten Typen ersetzt, als wären sie direkt in der Klasse oder Methode verwendet worden.
-Das hat den Vorteil, dass typspezifische Optimierungen durchgeführt werden können und Spezialisierungen eigene Methoden und sonstige Funktionalität bereitstellen können.
+Das hat den Vorteil, dass typspezifische Optimierungen durchgeführt werden können und Spezialisierungen eigene Methoden und neue Funktionalität bereitstellen können.
 In ähnlicher Form wird der Ansatz auch von der \ac{jvm}-Sprache \emph{Scala} verwendet, in der Spezialisierungen mit einer Annotation an einem Typparameter festgelegt werden können~\cite{scala-specialized}.
 Das verringert zwar den Programmieraufwand, sorgt aber dennoch für größere Artefakte aufgrund des duplizierten Bytecodes.
 Zudem sind die entstehenden Klassen aus Sicht der \ac{jvm} und anderen Java-ähnlichen Sprachen nicht verwandt, wodurch spezielle Interfaces verwendet werden müssen, wenn beispielsweise ein Wildcard-Typ gebraucht wird.
@@ -157,16 +156,16 @@ Eine solche Vorgehensweise ist in zukünftigen Java-Versionen aufgrund von Kompa
 
 Eine kompatible und nachhaltige Implementierung von generischer Spezialisierung erfordert folglich Unterstützung durch die Laufzeitumgebung.
 Bereits im Jahr 2014 wurde an einem ersten Prototyp gearbeitet, der Teile der Spezialisierung auf die Laufzeit auslagert~\cite{specialization}.
-Der Java-Compiler erzeugt dann nur eine Bytecode-Datei pro Klasse, von der ausgehend Spezialisierungen zur Laufzeit erzeugt werden, wenn sie benötigt werden.
+Der Java-Compiler erzeugt dann nur eine Bytecode-Datei pro Klasse, die als Grundlage für die bei Bedarf durchgeführte Spezialisierung zur Laufzeit dienen.
 Dafür mussten Metadaten im Bytecode-Format hinzugefügt werden, die Angaben über verwendete Typparameter machen, die bei der reinen Erasure zuvor nicht notwendig waren.
-Ein wichtiges Ziel war es, die Spezialisierung zur Laufzeit so einfach wie möglich zu halten und zusätzliche Verifikation oder komplexe Übersetzungsverfahren zu vermeiden.
+Die Spezialisierung zur Laufzeit sollte so einfach wie möglich gehalten werden und zusätzliche Verifikation oder komplexe Übersetzungsverfahren vermeiden.
 Das sollte die Implementierung vereinfachen und Ladezeiten gering halten, setzte aber bedachte Änderung des Bytecode-Formats voraus.
 
 \subsubsection{Syntaktische Neuerungen}
 
 % any
 Zum aktuellen Zeitpunkt ist noch keine endgültige Syntax für generischen Typen mit Spezialisierung festgelegt.
-Es ist naheliegend, dass aus Kompatibilitätsgründen die bestehende Syntax für Typparameter die Semantik der Erasure beibehalten wird und Spezialisierung explizit aktiviert werden muss.
+Es ist naheliegend, dass aus Kompatibilitätsgründen die bestehende Syntax für Typparameter die Semantik der Erasure beibehalten wird und die Spezialisierung explizit aktiviert werden muss.
 Dafür wurde in der Literatur zu Valhalla vorläufig das Schlüsselwort \code{any} verwendet: \code{class Box<any T>}.
 
 % Layers
@@ -174,7 +173,7 @@ Eine weitere vorgeschlagene syntaktische Neuerung sind die \emph{Layers}, welche
 Sie sind aus dem Problem entstanden, dass die meisten bestehenden generischen Klassen unter der Annahme implementiert wurden, dass sie nur mit Referenztypen verwendet werden.
 So kann beispielsweise die Methode \code{V get(K key)} der Klasse \code{Map<K, V>} \code{null} zurückgeben, wenn der Schlüssel nicht vorhanden ist.
 Dies ist jedoch nicht möglich, wenn \code{V=int} ist.
-Mithilfe von Layers kann nun festgelegt werden, dass es die \code{get}-Methode nur dann geben soll, wenn \code{V} ein Referenztyp ist.
+Mithilfe von Layers kann festgelegt werden, dass es die \code{get}-Methode nur dann geben soll, wenn \code{V} ein Referenztyp ist.
 Andernfalls könnte eine neue Methode \code{getOrDefault} hinzugefügt werden.
 Listing~\ref{lst:map-layer} zeigt, wie dies im Code definiert werden könnte.
 Das Schlüsselwort \code{layer} gibt hier die Methoden an, die nur in der Spezialisierung für Referenztypen \code{V} existieren sollen.
@@ -201,4 +200,4 @@ Das Schlüsselwort \code{layer} gibt hier die Methoden an, die nur in der Spezia
 
 % Weitere Probleme
 Layer sind eine Lösung für eines von vielen konzeptionellen und implementierungsbezogenen Problemen mit der Spezialisierung.
-Weitere Hindernisse bei Wildcard-Typen, Arrays, Reflection und anderen Bereichen der Sprache sind in~\cite{jep-218} und~\cite{specialization} näher erläutert.
+Weitere Hindernisse sind bei Wildcard-Typen, Arrays, Reflection und anderen Bereichen der Sprache aufgetreten, werden in dieser Arbeit aber nicht näher betrachtet.
