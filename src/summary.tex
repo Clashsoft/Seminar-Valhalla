@@ -1,1 +1,14 @@
 \section{Zusammenfassung}\label{sec:summary}
+
+Das OpenJDK-Projekt Valhalla hat das Ziel, die Sprache Java und die \ac{jvm} dahingehend anzupassen, dass moderne Hardware besser genutzt werden kann.
+Es strebt eine Alternative für Referenz-basierte Objekte an, um Indirektion zu vermeiden und damit sowohl Zugriffszeiten als auch Speicherverbrauch zu verringern.
+Nachdem Java-Entwickler mit Value-basierten Klassen bereits in Java 8 an ein solches Konzept herangeführt wurden, stellt das Projekt nun sprachliche Unterstützung mit den Inline-Klassen bereit.
+Während diese wie gewöhnliche Klassen programmiert werden, verhalten sie sich in vielen Aspekten wie primitive Typen.
+Dabei wird Indirektion vermieden, wodurch höhere Effizienz zur Laufzeit erreicht werden kann.
+
+Ein weiteres Problem, das mit Projekt Valhalla behoben werden soll, betrifft die generischen Typen in Java.
+Diese sind derzeit nicht kompatibel mit primitiven Typen, da sie mit dem Ansatz der Erasure implementiert wurden.
+Mit der Einführung der Inline-Klassen wird das Problem verstärkt, da ihre Vorteile in generischen Datenstrukturen mit Erasure nicht anwendbar sind.
+Abhilfe soll die Spezialisierung schaffen, die durch die Erweiterung von Compiler und Laufzeit implementiert wird und die Probleme der Erasure lösen soll.
+Es hat sich im Verlauf des Projekts Valhalla erwiesen, dass diese Kombination am besten geeignet ist, um die Spezialisierung effizient und abwärtskompatibel einzuführen.
+Aufgrund des damit verbundenen Implementierungsaufwands und bisher ungelösten Problemen ist das Projekt jedoch noch nicht vollendet.
